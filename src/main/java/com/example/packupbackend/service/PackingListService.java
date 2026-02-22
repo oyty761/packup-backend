@@ -1,5 +1,4 @@
 package com.example.packupbackend.service;
-
 import com.example.packupbackend.entity.PackingItem;
 import com.example.packupbackend.entity.Trip;
 import com.example.packupbackend.entity.User;

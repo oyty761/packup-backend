@@ -3,10 +3,10 @@ package com.example.packupbackend.service.impl;
 import com.example.packupbackend.entity.PackingItem;
 import com.example.packupbackend.entity.Trip;
 import com.example.packupbackend.entity.User;
-import com.example.packupbackend.service.PackingListService;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import com.example.packupbackend.service.PackingListService;
 
 @Service
 public class PackingListServiceImpl implements PackingListService {
@@ -54,3 +54,4 @@ public class PackingListServiceImpl implements PackingListService {
         return items;
     }
 }
+

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.PackingItemMapper">
+
+    <resultMap id="PackingItemResultMap" type="com.example.packupbackend.entity.PackingItem">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="category" column="category"/>
+        <result property="quantity" column="quantity"/>
+        <result property="notes" column="notes"/>
+        <result property="isPacked" column="is_packed"/>
+        <result property="source" column="source"/>
+        <association property="trip" column="trip_id" javaType="com.example.packupbackend.entity.Trip">
+            <id property="id" column="trip_id"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.PackingItem" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO packing_item (name, category, quantity, notes, is_packed, source, trip_id)
+        VALUES (#{name}, #{category}, #{quantity}, #{notes}, #{isPacked}, #{source}, #{trip.id})
+    </insert>
+
+    <select id="selectById" parameterType="Long" resultMap="PackingItemResultMap">
+        SELECT pi.*, t.id as trip_id
+        FROM packing_item pi
+                 LEFT JOIN trip t ON pi.trip_id = t.id
+        WHERE pi.id = #{id}
+    </select>
+
+    <select id="selectByTripId" parameterType="Long" resultMap="PackingItemResultMap">
+        SELECT pi.*, t.id as trip_id
+        FROM packing_item pi
+                 LEFT JOIN trip t ON pi.trip_id = t.id
+        WHERE pi.trip_id = #{tripId}
+    </select>
+
+    <select id="selectByTripIdAndIsPacked" resultMap="PackingItemResultMap">
+        SELECT pi.*, t.id as trip_id
+        FROM packing_item pi
+                 LEFT JOIN trip t ON pi.trip_id = t.id
+        WHERE pi.trip_id = #{tripId} AND pi.is_packed = #{isPacked}
+    </select>
+
+    <select id="selectByTripIdAndCategory" resultMap="PackingItemResultMap">
+        SELECT pi.*, t.id as trip_id
+        FROM packing_item pi
+                 LEFT JOIN trip t ON pi.trip_id = t.id
+        WHERE pi.trip_id = #{tripId} AND pi.category = #{category}
+    </select>
+
+    <select id="countByTripIdAndIsPacked" resultType="int">
+        SELECT COUNT(*)
+        FROM packing_item
+        WHERE trip_id = #{tripId} AND is_packed = #{isPacked}
+    </select>
+
+    <select id="selectAll" resultMap="PackingItemResultMap">
+        SELECT pi.*, t.id as trip_id
+        FROM packing_item pi
+                 LEFT JOIN trip t ON pi.trip_id = t.id
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.PackingItem">
+        UPDATE packing_item
+        SET name = #{name},
+            category = #{category},
+            quantity = #{quantity},
+            notes = #{notes},
+            is_packed = #{isPacked},
+            source = #{source},
+            trip_id = #{trip.id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM packing_item WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByTripId" parameterType="Long">
+        DELETE FROM packing_item WHERE trip_id = #{tripId}
+    </delete>
+
+</mapper>

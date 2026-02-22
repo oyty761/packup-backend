@@ -1,7 +1,7 @@
 package com.example.packupbackend.service.impl;
 
 import com.example.packupbackend.entity.User;
-import com.example.packupbackend.repository.UserRepository;
+import com.example.packupbackend.mapper.UserMapper;
 import com.example.packupbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +12,12 @@ import java.security.NoSuchAlgorithmException;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserMapper userMapper;
 
     @Override
     public User register(String username, String password, String gender, Integer age) {
         // 检查用户名是否已存在
-        if (userRepository.existsByUsername(username)) {
+        if (userMapper.existsByUsername(username) > 0) {
             throw new RuntimeException("用户名已存在");
         }
 
@@ -32,13 +32,16 @@ public class UserServiceImpl implements UserService {
         user.setStylePreference("comprehensive");
         user.setHealthNotes("");
 
-        return userRepository.save(user);
+        userMapper.insert(user);
+        return user;
     }
 
     @Override
     public User login(String username, String password) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("用户不存在"));
+        User user = userMapper.selectByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("用户不存在");
+        }
 
         if (!user.getPassword().equals(encryptPassword(password))) {
             throw new RuntimeException("密码错误");

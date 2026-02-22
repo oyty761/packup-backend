@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.TripMapper">
+
+    <resultMap id="TripResultMap" type="com.example.packupbackend.entity.Trip">
+        <id property="id" column="id"/>
+        <result property="tripName" column="trip_name"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="travelDays" column="travel_days"/>
+        <result property="createdTime" column="created_time"/>
+        <association property="user" column="user_id" javaType="com.example.packupbackend.entity.User">
+            <id property="id" column="user_id"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.Trip" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO trip (trip_name, start_date, end_date, travel_days, user_id, created_time)
+        VALUES (#{tripName}, #{startDate}, #{endDate}, #{travelDays}, #{user.id}, #{createdTime})
+    </insert>
+
+    <select id="selectById" parameterType="Long" resultMap="TripResultMap">
+        SELECT t.*, u.id as user_id
+        FROM trip t
+                 LEFT JOIN user u ON t.user_id = u.id
+        WHERE t.id = #{id}
+    </select>
+
+    <select id="selectByUserId" parameterType="Long" resultMap="TripResultMap">
+        SELECT t.*, u.id as user_id
+        FROM trip t
+                 LEFT JOIN user u ON t.user_id = u.id
+        WHERE t.user_id = #{userId}
+    </select>
+
+    <select id="selectByUserIdOrderByCreatedTimeDesc" parameterType="Long" resultMap="TripResultMap">
+        SELECT t.*, u.id as user_id
+        FROM trip t
+                 LEFT JOIN user u ON t.user_id = u.id
+        WHERE t.user_id = #{userId}
+        ORDER BY t.created_time DESC
+    </select>
+
+    <select id="selectAll" resultMap="TripResultMap">
+        SELECT t.*, u.id as user_id
+        FROM trip t
+                 LEFT JOIN user u ON t.user_id = u.id
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.Trip">
+        UPDATE trip
+        SET trip_name = #{tripName},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            travel_days = #{travelDays},
+            user_id = #{user.id},
+            created_time = #{createdTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM trip WHERE id = #{id}
+    </delete>
+
+</mapper>

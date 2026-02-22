@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.PackingTemplateMapper">
+
+    <resultMap id="PackingTemplateResultMap" type="com.example.packupbackend.entity.PackingTemplate">
+        <id property="id" column="id"/>
+        <result property="templateName" column="template_name"/>
+        <result property="description" column="description"/>
+        <result property="itemsJson" column="items_json"/>
+        <association property="user" column="user_id" javaType="com.example.packupbackend.entity.User">
+            <id property="id" column="user_id"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.PackingTemplate" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO packing_template (template_name, description, items_json, user_id)
+        VALUES (#{templateName}, #{description}, #{itemsJson}, #{user.id})
+    </insert>
+
+    <select id="selectById" parameterType="Long" resultMap="PackingTemplateResultMap">
+        SELECT pt.*, u.id as user_id
+        FROM packing_template pt
+                 LEFT JOIN user u ON pt.user_id = u.id
+        WHERE pt.id = #{id}
+    </select>
+
+    <select id="selectByUserId" parameterType="Long" resultMap="PackingTemplateResultMap">
+        SELECT pt.*, u.id as user_id
+        FROM packing_template pt
+                 LEFT JOIN user u ON pt.user_id = u.id
+        WHERE pt.user_id = #{userId}
+    </select>
+
+    <select id="selectByUserIdAndTemplateNameContaining" resultMap="PackingTemplateResultMap">
+        SELECT pt.*, u.id as user_id
+        FROM packing_template pt
+                 LEFT JOIN user u ON pt.user_id = u.id
+        WHERE pt.user_id = #{userId} AND pt.template_name LIKE CONCAT('%', #{templateName}, '%')
+    </select>
+
+    <select id="selectByUserIdOrderByTemplateNameAsc" parameterType="Long" resultMap="PackingTemplateResultMap">
+        SELECT pt.*, u.id as user_id
+        FROM packing_template pt
+                 LEFT JOIN user u ON pt.user_id = u.id
+        WHERE pt.user_id = #{userId}
+        ORDER BY pt.template_name ASC
+    </select>
+
+    <select id="existsByUserIdAndTemplateName" resultType="int">
+        SELECT COUNT(*)
+        FROM packing_template
+        WHERE user_id = #{userId} AND template_name = #{templateName}
+    </select>
+
+    <select id="selectAll" resultMap="PackingTemplateResultMap">
+        SELECT pt.*, u.id as user_id
+        FROM packing_template pt
+                 LEFT JOIN user u ON pt.user_id = u.id
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.PackingTemplate">
+        UPDATE packing_template
+        SET template_name = #{templateName},
+            description = #{description},
+            items_json = #{itemsJson},
+            user_id = #{user.id}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM packing_template WHERE id = #{id}
+    </delete>
+
+</mapper>

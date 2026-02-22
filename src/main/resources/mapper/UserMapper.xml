@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="com.example.packupbackend.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="gender" column="gender"/>
+        <result property="age" column="age"/>
+        <result property="isHeatSensitive" column="is_heat_sensitive"/>
+        <result property="isColdSensitive" column="is_cold_sensitive"/>
+        <result property="stylePreference" column="style_preference"/>
+        <result property="healthNotes" column="health_notes"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (username, password, gender, age, is_heat_sensitive, is_cold_sensitive, style_preference, health_notes)
+        VALUES (#{username}, #{password}, #{gender}, #{age}, #{isHeatSensitive}, #{isColdSensitive}, #{stylePreference}, #{healthNotes})
+    </insert>
+
+    <select id="selectById" parameterType="Long" resultMap="UserResultMap">
+        SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <select id="selectByUsername" parameterType="String" resultMap="UserResultMap">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
+
+    <select id="selectAll" resultMap="UserResultMap">
+        SELECT * FROM user
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.User">
+        UPDATE user
+        SET username = #{username}, password = #{password}, gender = #{gender}, age = #{age},
+            is_heat_sensitive = #{isHeatSensitive}, is_cold_sensitive = #{isColdSensitive},
+            style_preference = #{stylePreference}, health_notes = #{healthNotes}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
+
+    <select id="existsByUsername" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE username = #{username}
+    </select>
+
+</mapper>
