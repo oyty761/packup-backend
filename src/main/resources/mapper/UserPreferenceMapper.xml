@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.UserPreferenceMapper">
+
+    <resultMap id="UserPreferenceResultMap" type="com.example.packupbackend.entity.UserPreference">
+        <id property="userId" column="user_id"/>
+        <result property="age" column="age"/>
+        <result property="gender" column="gender"/>
+        <result property="travelCompanions" column="travel_companions"/>
+        <result property="coldSensitivity" column="cold_sensitivity"/>
+        <result property="heatSensitivity" column="heat_sensitivity"/>
+        <result property="healthIssues" column="health_issues"/>
+        <result property="packingStyle" column="packing_style"/>
+        <result property="updatedTime" column="updated_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.UserPreference">
+        INSERT INTO user_preference (user_id, age, gender, travel_companions, cold_sensitivity, 
+                                   heat_sensitivity, health_issues, packing_style, updated_time)
+        VALUES (#{userId}, #{age}, #{gender}, #{travelCompanions}, #{coldSensitivity},
+                #{heatSensitivity}, #{healthIssues}, #{packingStyle}, #{updatedTime})
+    </insert>
+
+    <select id="selectByUserId" parameterType="Long" resultMap="UserPreferenceResultMap">
+        SELECT * FROM user_preference WHERE user_id = #{userId}
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.UserPreference">
+        UPDATE user_preference
+        SET age = #{age}, gender = #{gender}, travel_companions = #{travelCompanions},
+            cold_sensitivity = #{coldSensitivity}, heat_sensitivity = #{heatSensitivity},
+            health_issues = #{healthIssues}, packing_style = #{packingStyle},
+            updated_time = #{updatedTime}
+        WHERE user_id = #{userId}
+    </update>
+
+    <delete id="deleteByUserId" parameterType="Long">
+        DELETE FROM user_preference WHERE user_id = #{userId}
+    </delete>
+
+    <select id="existsByUserId" parameterType="Long" resultType="int">
+        SELECT COUNT(*) FROM user_preference WHERE user_id = #{userId}
+    </select>
+
+</mapper>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper/TripActivityMapper">
+
+    <resultMap id="TripActivityResultMap" type="com.example.packupbackend.entity.TripActivity">
+        <id property="id" column="id"/>
+        <result property="tripId" column="trip_id"/>
+        <result property="activityCategory" column="activity_category"/>
+        <result property="activityDetail" column="activity_detail"/>
+        <result property="poiId" column="poi_id"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.TripActivity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO trip_activity (trip_id, activity_category, activity_detail, poi_id)
+        VALUES (#{tripId}, #{activityCategory}, #{activityDetail}, #{poiId})
+    </insert>
+
+    <select id="selectById" parameterType="Long" resultMap="TripActivityResultMap">
+        SELECT * FROM trip_activity WHERE id = #{id}
+    </select>
+
+    <select id="selectByTripId" parameterType="Long" resultMap="TripActivityResultMap">
+        SELECT * FROM trip_activity WHERE trip_id = #{tripId}
+    </select>
+
+    <select id="selectAll" resultMap="TripActivityResultMap">
+        SELECT * FROM trip_activity
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.TripActivity">
+        UPDATE trip_activity
+        SET trip_id = #{tripId}, activity_category = #{activityCategory}, activity_detail = #{activityDetail}, poi_id = #{poiId}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM trip_activity WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByTripId" parameterType="Long">
+        DELETE FROM trip_activity WHERE trip_id = #{tripId}
+    </delete>
+
+    <select id="countByTripId" parameterType="Long" resultType="int">
+        SELECT COUNT(*) FROM trip_activity WHERE trip_id = #{tripId}
+    </select>
+
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.PackingListSnapshotMapper">
+
+    <resultMap id="PackingListSnapshotResultMap" type="com.example.packupbackend.entity.PackingListSnapshot">
+        <id property="id" column="id"/>
+        <result property="originalTripId" column="original_trip_id"/>
+        <result property="sourceTemplateId" column="source_template_id"/>
+        <result property="snapshotName" column="snapshot_name"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.PackingListSnapshot" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO packing_list_snapshot (original_trip_id, source_template_id, snapshot_name, created_at)
+        VALUES (#{originalTripId}, #{sourceTemplateId}, #{snapshotName}, #{createdAt})
+    </insert>
+
+    <select id="selectById" parameterType="Long" resultMap="PackingListSnapshotResultMap">
+        SELECT * FROM packing_list_snapshot WHERE id = #{id}
+    </select>
+
+    <select id="selectByOriginalTripId" parameterType="Long" resultMap="PackingListSnapshotResultMap">
+        SELECT * FROM packing_list_snapshot WHERE original_trip_id = #{originalTripId}
+    </select>
+
+    <select id="selectBySourceTemplateId" parameterType="Long" resultMap="PackingListSnapshotResultMap">
+        SELECT * FROM packing_list_snapshot WHERE source_template_id = #{sourceTemplateId}
+    </select>
+
+    <select id="selectAll" resultMap="PackingListSnapshotResultMap">
+        SELECT * FROM packing_list_snapshot
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.PackingListSnapshot">
+        UPDATE packing_list_snapshot
+        SET original_trip_id = #{originalTripId}, source_template_id = #{sourceTemplateId},
+            snapshot_name = #{snapshotName}, created_at = #{createdAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM packing_list_snapshot WHERE id = #{id}
+    </delete>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM packing_list_snapshot
+    </select>
+
+</mapper>

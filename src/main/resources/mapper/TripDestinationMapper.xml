@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.TripDestinationMapper">
+
+    <resultMap id="TripDestinationResultMap" type="com.example.packupbackend.entity.TripDestination">
+        <id property="id" column="id"/>
+        <result property="tripId" column="trip_id"/>
+        <result property="cityName" column="city_name"/>
+        <result property="country" column="country"/>
+        <result property="poiName" column="poi_name"/>
+        <result property="arrivalDate" column="arrival_date"/>
+        <result property="departureDate" column="departure_date"/>
+        <result property="orderIndex" column="order_index"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.TripDestination" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO trip_destination (trip_id, city_name, country, poi_name, arrival_date, departure_date, order_index)
+        VALUES (#{tripId}, #{cityName}, #{country}, #{poiName}, #{arrivalDate}, #{departureDate}, #{orderIndex})
+    </insert>
+
+    <select id="selectById" parameterType="Long" resultMap="TripDestinationResultMap">
+        SELECT * FROM trip_destination WHERE id = #{id}
+    </select>
+
+    <select id="selectByTripId" parameterType="Long" resultMap="TripDestinationResultMap">
+        SELECT * FROM trip_destination WHERE trip_id = #{tripId} ORDER BY order_index
+    </select>
+
+    <select id="selectAll" resultMap="TripDestinationResultMap">
+        SELECT * FROM trip_destination
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.TripDestination">
+        UPDATE trip_destination
+        SET trip_id = #{tripId}, city_name = #{cityName}, country = #{country}, poi_name = #{poiName},
+            arrival_date = #{arrivalDate}, departure_date = #{departureDate}, order_index = #{orderIndex}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM trip_destination WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByTripId" parameterType="Long">
+        DELETE FROM trip_destination WHERE trip_id = #{tripId}
+    </delete>
+
+    <select id="countByTripId" parameterType="Long" resultType="int">
+        SELECT COUNT(*) FROM trip_destination WHERE trip_id = #{tripId}
+    </select>
+
+</mapper>

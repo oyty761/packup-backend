@@ -4,6 +4,6 @@ import com.example.packupbackend.entity.Trip;
 import com.example.packupbackend.entity.User;
 import java.util.List;
 
-public interface PackingListService {
+public interface PackingService {
     List<PackingItem> generatePackingList(Trip trip, User user);
 }

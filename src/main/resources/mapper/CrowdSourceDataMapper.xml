@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.CrowdSourceDataMapper">
+
+    <resultMap id="CrowdSourceDataResultMap" type="com.example.packupbackend.entity.CrowdSourceData">
+        <id property="id" column="id"/>
+        <result property="tripId" column="trip_id"/>
+        <result property="keyword" column="keyword"/>
+        <result property="sourcePlatform" column="source_platform"/>
+        <result property="extractedItem" column="extracted_item"/>
+        <result property="poiRelation" column="poi_relation"/>
+        <result property="mentionCount" column="mention_count"/>
+        <result property="createdTime" column="created_time"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.CrowdSourceData" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO crowd_source_data (trip_id, keyword, source_platform, extracted_item, poi_relation, mention_count, created_time)
+        VALUES (#{tripId}, #{keyword}, #{sourcePlatform}, #{extractedItem}, #{poiRelation}, #{mentionCount}, #{createdTime})
+    </insert>
+
+    <select id="selectById" parameterType="Long" resultMap="CrowdSourceDataResultMap">
+        SELECT * FROM crowd_source_data WHERE id = #{id}
+    </select>
+
+    <select id="selectByTripId" parameterType="Long" resultMap="CrowdSourceDataResultMap">
+        SELECT * FROM crowd_source_data WHERE trip_id = #{tripId} ORDER BY mention_count DESC
+    </select>
+
+    <select id="selectByKeyword" parameterType="String" resultMap="CrowdSourceDataResultMap">
+        SELECT * FROM crowd_source_data WHERE keyword = #{keyword} ORDER BY mention_count DESC
+    </select>
+
+    <select id="selectTopItemsByTripId" resultMap="CrowdSourceDataResultMap">
+        SELECT * FROM crowd_source_data 
+        WHERE trip_id = #{tripId} 
+        ORDER BY mention_count DESC 
+        LIMIT #{limit}
+    </select>
+
+    <select id="selectAll" resultMap="CrowdSourceDataResultMap">
+        SELECT * FROM crowd_source_data
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.CrowdSourceData">
+        UPDATE crowd_source_data
+        SET trip_id = #{tripId}, keyword = #{keyword}, source_platform = #{sourcePlatform},
+            extracted_item = #{extractedItem}, poi_relation = #{poiRelation}, mention_count = #{mentionCount},
+            created_time = #{createdTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Long">
+        DELETE FROM crowd_source_data WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteByTripId" parameterType="Long">
+        DELETE FROM crowd_source_data WHERE trip_id = #{tripId}
+    </delete>
+
+    <select id="countByTripId" parameterType="Long" resultType="int">
+        SELECT COUNT(*) FROM crowd_source_data WHERE trip_id = #{tripId}
+    </select>
+
+</mapper>

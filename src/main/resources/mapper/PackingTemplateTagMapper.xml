@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.PackingTemplateTagMapper">
+
+    <resultMap id="PackingTemplateTagResultMap" type="com.example.packupbackend.entity.PackingTemplateTag">
+        <result property="templateId" column="template_id"/>
+        <result property="tag" column="tag"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.PackingTemplateTag">
+        INSERT INTO packing_template_tag (template_id, tag)
+        VALUES (#{templateId}, #{tag})
+    </insert>
+
+    <select id="selectByTemplateId" parameterType="Long" resultMap="PackingTemplateTagResultMap">
+        SELECT * FROM packing_template_tag WHERE template_id = #{templateId}
+    </select>
+
+    <select id="selectTagsByTemplateId" parameterType="Long" resultType="String">
+        SELECT tag FROM packing_template_tag WHERE template_id = #{templateId}
+    </select>
+
+    <select id="selectAll" resultMap="PackingTemplateTagResultMap">
+        SELECT * FROM packing_template_tag
+    </select>
+
+    <delete id="deleteByTemplateId" parameterType="Long">
+        DELETE FROM packing_template_tag WHERE template_id = #{templateId}
+    </delete>
+
+    <delete id="deleteByTemplateIdAndTag">
+        DELETE FROM packing_template_tag WHERE template_id = #{templateId} AND tag = #{tag}
+    </delete>
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.packupbackend.mapper.SnapshotItemMapper">
+
+    <resultMap id="SnapshotItemResultMap" type="com.example.packupbackend.entity.SnapshotItem">
+        <result property="snapshotId" column="snapshot_id"/>
+        <result property="itemName" column="item_name"/>
+        <result property="quantity" column="quantity"/>
+        <result property="category" column="category"/>
+        <result property="isChecked" column="is_checked"/>
+        <result property="notes" column="notes"/>
+        <result property="orderIndex" column="order_index"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.packupbackend.entity.SnapshotItem">
+        INSERT INTO snapshot_item (snapshot_id, item_name, quantity, category, is_checked, notes, order_index)
+        VALUES (#{snapshotId}, #{itemName}, #{quantity}, #{category}, #{isChecked}, #{notes}, #{orderIndex})
+    </insert>
+
+    <select id="selectBySnapshotId" parameterType="Long" resultMap="SnapshotItemResultMap">
+        SELECT * FROM snapshot_item WHERE snapshot_id = #{snapshotId} ORDER BY order_index
+    </select>
+
+    <select id="selectAll" resultMap="SnapshotItemResultMap">
+        SELECT * FROM snapshot_item
+    </select>
+
+    <update id="update" parameterType="com.example.packupbackend.entity.SnapshotItem">
+        UPDATE snapshot_item
+        SET quantity = #{quantity}, category = #{category}, is_checked = #{isChecked},
+            notes = #{notes}, order_index = #{orderIndex}
+        WHERE snapshot_id = #{snapshotId} AND item_name = #{itemName}
+    </update>
+
+    <update id="updateCheckedStatus">
+        UPDATE snapshot_item
+        SET is_checked = #{isChecked}
+        WHERE snapshot_id = #{snapshotId} AND item_name = #{itemName}
+    </update>
+
+    <delete id="deleteBySnapshotId" parameterType="Long">
+        DELETE FROM snapshot_item WHERE snapshot_id = #{snapshotId}
+    </delete>
+
+    <delete id="deleteBySnapshotIdAndItemName">
+        DELETE FROM snapshot_item WHERE snapshot_id = #{snapshotId} AND item_name = #{itemName}
+    </delete>
+
+    <select id="countBySnapshotId" parameterType="Long" resultType="int">
+        SELECT COUNT(*) FROM snapshot_item WHERE snapshot_id = #{snapshotId}
+    </select>
+
+</mapper>

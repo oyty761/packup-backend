@@ -6,23 +6,36 @@
 
     <resultMap id="UserResultMap" type="com.example.packupbackend.entity.User">
         <id property="id" column="id"/>
+        <result property="openId" column="open_id"/>
+        <result property="unionId" column="union_id"/>
+        <result property="sessionKey" column="session_key"/>
+        <result property="nickname" column="nickname"/>
+        <result property="avatarUrl" column="avatar_url"/>
+        <result property="phone" column="phone"/>
         <result property="username" column="username"/>
         <result property="password" column="password"/>
-        <result property="gender" column="gender"/>
-        <result property="age" column="age"/>
-        <result property="isHeatSensitive" column="is_heat_sensitive"/>
-        <result property="isColdSensitive" column="is_cold_sensitive"/>
-        <result property="stylePreference" column="style_preference"/>
-        <result property="healthNotes" column="health_notes"/>
+        <result property="status" column="status"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.example.packupbackend.entity.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user (username, password, gender, age, is_heat_sensitive, is_cold_sensitive, style_preference, health_notes)
-        VALUES (#{username}, #{password}, #{gender}, #{age}, #{isHeatSensitive}, #{isColdSensitive}, #{stylePreference}, #{healthNotes})
+        INSERT INTO user (open_id, union_id, session_key, nickname, avatar_url, phone, 
+                         username, password, status, last_login_time, last_login_ip, 
+                         created_time, updated_time)
+        VALUES (#{openId}, #{unionId}, #{sessionKey}, #{nickname}, #{avatarUrl}, #{phone},
+                #{username}, #{password}, #{status}, #{lastLoginTime}, #{lastLoginIp},
+                #{createdTime}, #{updatedTime})
     </insert>
 
     <select id="selectById" parameterType="Long" resultMap="UserResultMap">
         SELECT * FROM user WHERE id = #{id}
+    </select>
+
+    <select id="selectByOpenId" parameterType="String" resultMap="UserResultMap">
+        SELECT * FROM user WHERE open_id = #{openId}
     </select>
 
     <select id="selectByUsername" parameterType="String" resultMap="UserResultMap">
@@ -33,11 +46,23 @@
         SELECT * FROM user
     </select>
 
+    <select id="selectByStatus" parameterType="Integer" resultMap="UserResultMap">
+        SELECT * FROM user WHERE status = #{status}
+    </select>
+
     <update id="update" parameterType="com.example.packupbackend.entity.User">
         UPDATE user
-        SET username = #{username}, password = #{password}, gender = #{gender}, age = #{age},
-            is_heat_sensitive = #{isHeatSensitive}, is_cold_sensitive = #{isColdSensitive},
-            style_preference = #{stylePreference}, health_notes = #{healthNotes}
+        SET open_id = #{openId}, union_id = #{unionId}, session_key = #{sessionKey},
+            nickname = #{nickname}, avatar_url = #{avatarUrl}, phone = #{phone},
+            username = #{username}, password = #{password}, status = #{status},
+            last_login_time = #{lastLoginTime}, last_login_ip = #{lastLoginIp},
+            updated_time = #{updatedTime}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateLastLogin">
+        UPDATE user
+        SET last_login_time = NOW(), last_login_ip = #{ip}
         WHERE id = #{id}
     </update>
 
@@ -47,6 +72,14 @@
 
     <select id="existsByUsername" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM user WHERE username = #{username}
+    </select>
+
+    <select id="existsByOpenId" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE open_id = #{openId}
+    </select>
+
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM user
     </select>
 
 </mapper>
