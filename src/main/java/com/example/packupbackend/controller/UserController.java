@@ -14,40 +14,60 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/register")
     public ApiResponse<User> register(@Valid @RequestBody UserRegistrationRequest request) {
-        User user = userService.register(
-            request.getUsername(), 
-            request.getPassword(), 
-            request.getGender(), 
-            request.getAge()
-        );
-        return ApiResponse.success("注册成功", user);
+        try {
+            User user = userService.register(
+                request.getUsername(), 
+                request.getPassword(), 
+                request.getGender(), 
+                request.getAge()
+            );
+            return ApiResponse.success("注册成功", user);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 
     @PostMapping("/login")
     public ApiResponse<User> login(@Valid @RequestBody UserLoginRequest request) {
-        User user = userService.login(request.getUsername(), request.getPassword());
-        return ApiResponse.success("登录成功", user);
+        try {
+            User user = userService.login(request.getUsername(), request.getPassword());
+            return ApiResponse.success("登录成功", user);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 
     @PostMapping("/wechat/register")
     public ApiResponse<User> registerWithWeChat(@Valid @RequestBody WeChatRegisterRequest request) {
-        User user = userService.registerWithWeChat(
-            request.getOpenId(), 
-            request.getNickname(), 
-            request.getAvatarUrl()
-        );
-        return ApiResponse.success("微信注册成功", user);
+        try {
+            User user = userService.registerWithWeChat(
+                request.getOpenId(),
+                request.getNickname(),
+                request.getAvatarUrl()
+            );
+            return ApiResponse.success("微信注册成功", user);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 
     @PostMapping("/wechat/login")
     public ApiResponse<User> loginWithWeChat(@Valid @RequestBody WeChatLoginRequest request) {
-        User user = userService.loginWithWeChat(request.getOpenId());
-        return ApiResponse.success("微信登录成功", user);
+        try {
+            User user = userService.loginWithWeChat(request.getOpenId());
+            return ApiResponse.success("微信登录成功", user);
+        } catch (Exception e) {
+            return ApiResponse.error(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -156,4 +176,5 @@ public class UserController {
         public String getOpenId() { return openId; }
         public void setOpenId(String openId) { this.openId = openId; }
     }
+}
 }
