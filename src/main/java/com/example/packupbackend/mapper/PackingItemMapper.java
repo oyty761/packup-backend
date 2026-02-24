@@ -17,5 +17,8 @@ public interface PackingItemMapper {
     int update(PackingItem packingItem);
     int deleteById(Long id);
     int deleteByTripId(Long tripId);
+    PackingItem findByTripIdAndNameAndSource(@Param("tripId") Long tripId,
+                                              @Param("name") String name,
+                                              @Param("source") String source);
 }
 
