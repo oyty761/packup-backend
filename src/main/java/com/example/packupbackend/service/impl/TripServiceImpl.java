@@ -190,4 +190,18 @@ public class TripServiceImpl implements TripService {
     public int getForecastCountByTripId(Long tripId) {
         return weatherForecastMapper.countByTripId(tripId);
     }
+
+    // 在 TripServiceImpl 中注入 WeatherBasedPackingService
+    private final WeatherBasedPackingService weatherBasedPackingService;
+    
+    @Transactional
+    public void createTripWithDestinations(Trip trip, List<TripDestination> destinations) {
+        tripMapper.insert(trip);
+        for (TripDestination dest : destinations) {
+            dest.setTripId(trip.getId());
+            tripDestinationMapper.insert(dest);
+        }
+        // 触发天气物品生成
+        weatherBasedPackingService.generateItemsFromWeather(trip);
+    }
 }
