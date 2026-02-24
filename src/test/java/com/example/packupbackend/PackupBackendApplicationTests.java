@@ -11,3 +11,8 @@ class PackupBackendApplicationTests {
     }
 
 }
+
+@Bean
+public RestTemplate restTemplate() {
+    return new RestTemplate();
+}
