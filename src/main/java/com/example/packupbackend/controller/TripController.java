@@ -109,4 +109,14 @@ public class TripController {
             this.endDate = endDate;
         }
     }
+
+    @PostMapping("/{tripId}/generate-weather-items")
+    public ApiResponse<Void> generateWeatherItems(@PathVariable Long tripId) {
+        Trip trip = tripMapper.findById(tripId);  // 需要注入 TripMapper
+        if (trip == null) {
+            return ApiResponse.error("行程不存在");
+        }
+        weatherBasedPackingService.generateItemsFromWeather(trip);
+        return ApiResponse.success(null);
+    }
 }
