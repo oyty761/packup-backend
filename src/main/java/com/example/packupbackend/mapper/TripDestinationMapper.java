@@ -9,6 +9,7 @@ public interface TripDestinationMapper {
     int insert(TripDestination destination);
     TripDestination selectById(Long id);
     List<TripDestination> selectByTripId(Long tripId);
+    List<TripDestination> findByTripId(@Param("tripId") Long tripId);
     List<TripDestination> selectAll();
     int update(TripDestination destination);
     int deleteById(Long id);
