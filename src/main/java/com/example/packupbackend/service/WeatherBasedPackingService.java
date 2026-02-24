@@ -121,4 +121,127 @@ public class WeatherBasedPackingService {
         try {
             Map<String, Object> response = restTemplate.getForObject(url, Map.class);
             if (response != null && "200".equals(response.get("code"))) {
-     
+                List<Map<String, Object>> locationList = (List<Map<String, Object>>) response.get("location");
+                if (locationList != null && !locationList.isEmpty()) {
+                    return (String) locationList.get(0).get("id");
+                }
+            }
+        } catch (Exception e) {
+            log.error("获取城市ID失败: {}", e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * 调用和风7天预报API获取指定日期范围内的天气
+     */
+    private List<WeatherForecast> fetchWeatherForecasts(String locationId, String cityName, LocalDate start, LocalDate end, Long tripId) {
+        String url = UriComponentsBuilder.fromHttpUrl(weatherApiConfig.getWeatherUrl())
+                .queryParam("location", locationId)
+                .queryParam("key", weatherApiConfig.getKey())
+                .build()
+                .toUriString();
+        try {
+            Map<String, Object> response = restTemplate.getForObject(url, Map.class);
+            if (response != null && "200".equals(response.get("code"))) {
+                List<Map<String, Object>> dailyList = (List<Map<String, Object>>) response.get("daily");
+                if (dailyList != null) {
+                    List<WeatherForecast> result = new ArrayList<>();
+                    for (Map<String, Object> daily : dailyList) {
+                        String fxDate = (String) daily.get("fxDate");
+                        LocalDate date = LocalDate.parse(fxDate);
+                        if (!date.isBefore(start) && !date.isAfter(end)) {
+                            WeatherForecast forecast = new WeatherForecast();
+                            forecast.setTripId(tripId);
+                            forecast.setForecastDate(date);
+                            forecast.setCity(cityName);
+                            forecast.setMinTemp(parseFloat(daily.get("tempMin")));
+                            forecast.setMaxTemp(parseFloat(daily.get("tempMax")));
+                            forecast.setPrecipitation(parseFloat(daily.get("precip")));
+                            forecast.setHumidity(parseInt(daily.get("humidity")));
+                            forecast.setWeatherDesc((String) daily.get("textDay"));
+                            forecast.setFetchTime(LocalDateTime.now());
+
+                            // 可选：获取紫外线指数（需额外调用生活指数API）
+                            // forecast.setUvIndex(fetchUVIndex(locationId, date));
+
+                            result.add(forecast);
+                        }
+                    }
+                    return result;
+                }
+            }
+        } catch (Exception e) {
+            log.error("获取天气预报失败: {}", e.getMessage());
+        }
+        return Collections.emptyList();
+    }
+
+    // 辅助转换方法
+    private Float parseFloat(Object obj) {
+        if (obj == null) return null;
+        try {
+            return Float.parseFloat(obj.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private Integer parseInt(Object obj) {
+        if (obj == null) return null;
+        try {
+            return Integer.parseInt(obj.toString());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    
+    /**
+     * 分析天气数据，生成建议的物品列表
+     */
+    private List<PackingItem> analyzeWeatherAndSuggestItems(List<WeatherForecast> forecasts, Trip trip) {
+        Set<String> itemNames = new HashSet<>();
+        List<PackingItem> items = new ArrayList<>();
+
+        boolean hasRain = forecasts.stream().anyMatch(f -> f.getWeatherDesc() != null && f.getWeatherDesc().contains("雨"));
+        boolean hasSnow = forecasts.stream().anyMatch(f -> f.getWeatherDesc() != null && f.getWeatherDesc().contains("雪"));
+        boolean highTemp = forecasts.stream().anyMatch(f -> f.getMaxTemp() != null && f.getMaxTemp() > 28);
+        boolean lowTemp = forecasts.stream().anyMatch(f -> f.getMinTemp() != null && f.getMinTemp() < 5);
+        boolean strongUV = forecasts.stream().anyMatch(f -> f.getUvIndex() != null && f.getUvIndex() >= 5);
+
+        if (hasRain && !itemNames.contains("雨伞")) {
+            items.add(createPackingItem("雨伞", "其他物品", 1, "建议携带雨伞，以防下雨", trip));
+            itemNames.add("雨伞");
+        }
+        if (hasSnow && !itemNames.contains("雪地靴")) {
+            items.add(createPackingItem("雪地靴", "衣物鞋包", 1, "下雪天气，建议穿防水保暖的雪地靴", trip));
+            itemNames.add("雪地靴");
+        }
+        if (highTemp && !itemNames.contains("防晒霜")) {
+            items.add(createPackingItem("防晒霜", "洗漱护肤", 1, "气温较高，紫外线可能较强，建议涂抹防晒霜", trip));
+            itemNames.add("防晒霜");
+        }
+        if (lowTemp && !itemNames.contains("羽绒服")) {
+            items.add(createPackingItem("羽绒服", "衣物鞋包", 1, "天气寒冷，建议携带羽绒服", trip));
+            itemNames.add("羽绒服");
+        }
+        if (strongUV && !itemNames.contains("太阳镜")) {
+            items.add(createPackingItem("太阳镜", "其他物品", 1, "紫外线强，建议佩戴太阳镜保护眼睛", trip));
+            itemNames.add("太阳镜");
+        }
+        // 可根据需要添加更多规则，如湿度大建议带除湿袋等
+
+        return items;
+    }
+
+    private PackingItem createPackingItem(String name, String category, int quantity, String notes, Trip trip) {
+        PackingItem item = new PackingItem();
+        item.setName(name);
+        item.setCategory(category);
+        item.setQuantity(quantity);
+        item.setNotes(notes);
+        item.setTrip(trip);       // 关联Trip对象，插入时会自动设置trip_id
+        return item;
+    }
+}
