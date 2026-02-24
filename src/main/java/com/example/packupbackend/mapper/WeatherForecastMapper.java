@@ -16,4 +16,7 @@ public interface WeatherForecastMapper {
     int deleteById(Long id);
     int deleteByTripId(Long tripId);
     int countByTripId(Long tripId);
+    WeatherForecast findByTripIdAndCityAndDate(@Param("tripId") Long tripId,
+                                                @Param("city") String city,
+                                                @Param("date") LocalDate date);
 }
