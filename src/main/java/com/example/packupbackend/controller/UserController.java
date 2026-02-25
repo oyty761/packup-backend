@@ -177,4 +177,3 @@ public class UserController {
         public void setOpenId(String openId) { this.openId = openId; }
     }
 }
-}
