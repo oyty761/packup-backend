@@ -3,6 +3,7 @@ package com.example.packupbackend.controller;
 import com.example.packupbackend.common.ApiResponse;
 import com.example.packupbackend.entity.Trip;
 import com.example.packupbackend.service.TripService;
+import com.example.packupbackend.service.WeatherBasedPackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,9 @@ public class TripController {
 
     @Autowired
     private TripService tripService;
+
+    @Autowired
+    private WeatherBasedPackingService weatherBasedPackingService;
 
     /**
      * 创建一个新的行程
@@ -112,7 +116,7 @@ public class TripController {
 
     @PostMapping("/{tripId}/generate-weather-items")
     public ApiResponse<Void> generateWeatherItems(@PathVariable Long tripId) {
-        Trip trip = tripMapper.findById(tripId);  // 需要注入 TripMapper
+        Trip trip = tripService.getTripById(tripId);
         if (trip == null) {
             return ApiResponse.error("行程不存在");
         }
@@ -120,3 +124,4 @@ public class TripController {
         return ApiResponse.success(null);
     }
 }
+
