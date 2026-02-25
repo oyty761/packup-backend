@@ -1,6 +1,9 @@
 package com.example.packupbackend.controller;
 
 import com.example.packupbackend.common.ApiResponse;
+import com.example.packupbackend.entity.PackingItem;
+import com.example.packupbackend.model.PackingList;
+import com.example.packupbackend.entity.PackingTemplate;
 import com.example.packupbackend.service.PackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,16 +35,16 @@ public class PackingController {
      */
     @GetMapping("/list/{id}")
     public ApiResponse<PackingList> getPackingList(@PathVariable Long id) {
-        // The orElseThrow is removed, assuming the service now throws a BusinessException
-        // which is handled by the GlobalExceptionHandler.
-        return ApiResponse.success(packingService.getPackingList(id).orElse(null));
+        return packingService.getPackingList(id)
+                .map(ApiResponse::success)
+                .orElse(ApiResponse.error("Packing list not found with id: " + id));
     }
 
     /**
      * 向指定的打包清单中添加一个新物品。
      */
     @PostMapping("/list/{id}/item")
-    public ApiResponse<PackingList> addItemToPackingList(@PathVariable Long id, @RequestBody Item item) {
+    public ApiResponse<PackingList> addItemToPackingList(@PathVariable Long id, @RequestBody PackingItem item) {
         return ApiResponse.success(packingService.addItemToPackingList(id, item));
     }
 
@@ -49,7 +52,7 @@ public class PackingController {
      * 更新指定打包清单中某个物品的信息。
      */
     @PutMapping("/list/{listId}/item/{itemId}")
-    public ApiResponse<PackingList> updateItemInPackingList(@PathVariable Long listId, @PathVariable Long itemId, @RequestBody Item item) {
+    public ApiResponse<PackingList> updateItemInPackingList(@PathVariable Long listId, @PathVariable Long itemId, @RequestBody PackingItem item) {
         return ApiResponse.success(packingService.updateItemInPackingList(listId, itemId, item));
     }
 
@@ -67,7 +70,7 @@ public class PackingController {
      * 将一个现有的打包清单保存为一个新模板。
      */
     @PostMapping("/template")
-    public ApiResponse<Template> saveAsTemplate(@RequestBody Map<String, String> payload) {
+    public ApiResponse<PackingTemplate> saveAsTemplate(@RequestBody Map<String, String> payload) {
         String name = payload.get("name");
         String category = payload.get("category");
         Long packingListId = Long.parseLong(payload.get("packingListId"));
@@ -88,7 +91,7 @@ public class PackingController {
      * 获取所有已保存的模板列表。
      */
     @GetMapping("/templates")
-    public ApiResponse<List<Template>> getAllTemplates() {
+    public ApiResponse<List<PackingTemplate>> getAllTemplates() {
         return ApiResponse.success(packingService.getAllTemplates());
     }
 }
