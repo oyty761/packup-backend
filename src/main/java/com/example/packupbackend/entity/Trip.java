@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class Trip {
     private Long id;
+    private Long userId;
     private String tripName;
     private List<String> destinations;
     private LocalDate startDate;
@@ -16,4 +17,6 @@ public class Trip {
     private List<String> activities;
     private User user;
     private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 }
+

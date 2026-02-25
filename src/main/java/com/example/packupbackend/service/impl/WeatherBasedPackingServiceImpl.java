@@ -1,4 +1,4 @@
-package com.example.packupbackend.service;
+package com.example.packupbackend.service.impl;
 
 import com.example.packupbackend.config.WeatherApiConfig;
 import com.example.packupbackend.entity.PackingItem;
@@ -20,7 +20,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class WeatherBasedPackingService {
+public class WeatherBasedPackingServiceImpl {
 
     private final WeatherApiConfig weatherApiConfig;
     private final RestTemplate restTemplate;
@@ -28,11 +28,11 @@ public class WeatherBasedPackingService {
     private final WeatherForecastMapper weatherForecastMapper;
     private final PackingItemMapper packingItemMapper;
 
-    public WeatherBasedPackingService(WeatherApiConfig weatherApiConfig,
-                                      RestTemplate restTemplate,
-                                      TripDestinationMapper tripDestinationMapper,
-                                      WeatherForecastMapper weatherForecastMapper,
-                                      PackingItemMapper packingItemMapper) {
+    public WeatherBasedPackingServiceImpl(WeatherApiConfig weatherApiConfig,
+                                          RestTemplate restTemplate,
+                                          TripDestinationMapper tripDestinationMapper,
+                                          WeatherForecastMapper weatherForecastMapper,
+                                          PackingItemMapper packingItemMapper) {
         this.weatherApiConfig = weatherApiConfig;
         this.restTemplate = restTemplate;
         this.tripDestinationMapper = tripDestinationMapper;

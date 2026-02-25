@@ -1,9 +1,6 @@
 package com.example.packupbackend.controller;
 
 import com.example.packupbackend.common.ApiResponse;
-import com.example.packupbackend.model.Item;
-import com.example.packupbackend.model.PackingList;
-import com.example.packupbackend.model.Template;
 import com.example.packupbackend.service.PackingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
