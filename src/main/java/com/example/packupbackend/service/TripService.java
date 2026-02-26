@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TripService {
+    void createTrip(Trip trip, List<TripDestination> destinations);
     Trip createTrip(Trip trip);
     Trip getTripById(Long id);
     List<Trip> getTripsByUserId(Long userId);
