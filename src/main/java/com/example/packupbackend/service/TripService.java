@@ -1,6 +1,8 @@
 package com.example.packupbackend.service;
 
 import com.example.packupbackend.entity.Trip;
+import com.example.packupbackend.entity.TripDestination;
+
 import java.time.LocalDate;
 import java.util.List;
 

@@ -2,6 +2,8 @@ package com.example.packupbackend.controller;
 
 import com.example.packupbackend.common.ApiResponse;
 import com.example.packupbackend.entity.Trip;
+import com.example.packupbackend.mapper.TripMapper;
+import com.example.packupbackend.service.DeepSeekPackingService;
 import com.example.packupbackend.service.TripService;
 import com.example.packupbackend.service.WeatherBasedPackingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,12 @@ public class TripController {
 
     @Autowired
     private TripService tripService;
+
+    @Autowired
+    private DeepSeekPackingService deepSeekPackingService;
+
+    @Autowired
+    private TripMapper tripMapper;
 
     @Autowired
     private WeatherBasedPackingService weatherBasedPackingService;

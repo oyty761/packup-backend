@@ -2,10 +2,9 @@ package com.example.packupbackend.controller;
 
 import com.example.packupbackend.common.ApiResponse;
 import com.example.packupbackend.entity.PackingItem;
-import com.example.packupbackend.entity.PackingTemplateItem;
-
 import com.example.packupbackend.entity.PackingTemplate;
 import com.example.packupbackend.service.PackingService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/packing")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class PackingController {
 
     @Autowired
@@ -28,6 +28,7 @@ public class PackingController {
      */
     @PostMapping("/list")
     public ApiResponse<PackingItem> createPackingItem(@RequestBody PackingItem packingItem) {
+        log.info("Creating packing item: {}", packingItem);
         return ApiResponse.success(packingService.createPackingItem(packingItem));
     }
 

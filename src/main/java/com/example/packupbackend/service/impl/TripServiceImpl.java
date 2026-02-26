@@ -2,7 +2,10 @@ package com.example.packupbackend.service.impl;
 
 import com.example.packupbackend.entity.*;
 import com.example.packupbackend.mapper.*;
+import com.example.packupbackend.service.DeepSeekPackingService;
 import com.example.packupbackend.service.TripService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,9 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class TripServiceImpl implements TripService {
+
+
+    private final TripMapper tripMapper;
+
+    private final TripDestinationMapper tripDestinationMapper;
 
     private final DeepSeekPackingService deepSeekPackingService;
 

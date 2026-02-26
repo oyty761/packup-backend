@@ -1,5 +1,6 @@
 package com.example.packupbackend.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDateTime;
 
