@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 @Data
 /**
- * 外部攻略数据实体类
+ * 外部攻略数据实体类（暂时用不上）
  * 对应数据库表: crowd_source_data
  * 
  * 存储从社交媒体平台（如小红书、抖音）抓取的旅行攻略数据。

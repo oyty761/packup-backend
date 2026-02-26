@@ -14,4 +14,4 @@ public interface SnapshotItemMapper {
     int deleteBySnapshotId(Long snapshotId);
     int deleteBySnapshotIdAndItemName(Long snapshotId, String itemName);
     int countBySnapshotId(Long snapshotId);
-}
+}//物品快照功能，暂时用不到

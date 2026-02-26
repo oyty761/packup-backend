@@ -26,7 +26,7 @@ public class PackingItem {
     private String category; // 物品分类（衣物鞋包/洗漱护肤/电子设备等）
     private String subCategory; // 物品子分类
     private String notes; // 物品备注信息
-    private Boolean isPacked = false; // 是否已打包状态
+    private Boolean isPacked = false; // 是否已打包
     private String source; // 物品来源（系统推荐/模板导入/手动添加）
     private Trip trip; // 关联的行程对象
     private LocalDateTime createdTime; // 创建时间

@@ -19,4 +19,4 @@ public interface UserMapper {
     int existsByUsername(String username);
     int existsByOpenId(String openId);
     int count();
-}
+}//用户的创建，修改，删除，查找

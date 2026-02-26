@@ -6,12 +6,12 @@ import java.util.List;
 
 @Mapper
 public interface PackingTemplateItemMapper {
-    int insert(PackingTemplateItem item);
-    PackingTemplateItem selectById(Long id);
-    List<PackingTemplateItem> selectByTemplateId(Long templateId);
-    List<PackingTemplateItem> selectAll();
-    int update(PackingTemplateItem item);
-    int deleteById(Long id);
-    int deleteByTemplateId(Long templateId);
-    int countByTemplateId(Long templateId);
-}
+    int insert(PackingTemplateItem item);// 插入新的模板物品记录
+    PackingTemplateItem selectById(Long id);// 根据ID查询模板物品记录
+    List<PackingTemplateItem> selectByTemplateId(Long templateId);// 根据模板ID查询模板物品记录
+    List<PackingTemplateItem> selectAll();// 查询所有模板物品记录
+    int update(PackingTemplateItem item);// 更新模板物品记录
+    int deleteById(Long id);// 根据ID删除模板物品记录
+    int deleteByTemplateId(Long templateId);// 根据模板ID删除模板物品记录
+    int countByTemplateId(Long templateId);// 根据模板ID统计模板物品记录数
+}//可能暂时用不到

@@ -116,12 +116,12 @@ public class TripController {
 
     @PostMapping("/{tripId}/generate-weather-items")
     public ApiResponse<Void> generateWeatherItems(@PathVariable Long tripId) {
-        Trip trip = tripService.getTripById(tripId);
-        if (trip == null) {
+        Trip trip = tripService.getTripById(tripId);//获取行程信息
+        if (trip == null) {//行程存在性验证
             return ApiResponse.error("行程不存在");
         }
-        weatherBasedPackingService.generateItemsFromWeather(trip);
-        return ApiResponse.success(null);
+        weatherBasedPackingService.generateItemsFromWeather(trip);//调用天气生成相应的打包物品建议
+        return ApiResponse.success(null);//成功后返回空数据的成功响应
     }
 }
 

@@ -10,4 +10,4 @@ public interface UserPreferenceMapper {
     int update(UserPreference preference);
     int deleteByUserId(Long userId);
     int existsByUserId(Long userId);
-}
+}//用户偏好的创建，修改，删除，查找

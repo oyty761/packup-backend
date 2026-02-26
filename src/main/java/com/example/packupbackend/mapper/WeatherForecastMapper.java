@@ -21,4 +21,4 @@ public interface WeatherForecastMapper {
     WeatherForecast findByTripIdAndCityAndDate(@Param("tripId") Long tripId,
                                                 @Param("city") String city,
                                                 @Param("date") LocalDate date);
-}
+}//天气预报的插入，查找，更新，删除，统计功能

@@ -19,7 +19,7 @@ public class UserController {
 
     private final UserService userService;
 
-    //注册
+    //用户注册
     @PostMapping("/register")
     public ApiResponse<User> register(@Valid @RequestBody UserRegisterDTO request) {
         try {
@@ -32,7 +32,7 @@ public class UserController {
             return ApiResponse.error(e.getMessage());
         }
     }
-
+//用户登录
     @PostMapping("/login")
     public ApiResponse<User> login(@Valid @RequestBody UserRegisterDTO request) {
         try {
@@ -42,7 +42,7 @@ public class UserController {
             return ApiResponse.error(e.getMessage());
         }
     }
-/*
+/*//微信登陆相关（暂时写不到）
     @PostMapping("/wechat/register")
     public ApiResponse<User> registerWithWeChat(@Valid @RequestBody WeChatRegisterRequest request) {
         try {
@@ -66,7 +66,7 @@ public class UserController {
             return ApiResponse.error(e.getMessage());
         }
     }*/
-
+//根据ID获取用户信息
     @GetMapping("/{id}")
     public ApiResponse<User> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
@@ -75,26 +75,26 @@ public class UserController {
         }
         return ApiResponse.success(user);
     }
-
+//获取用户列表
     @GetMapping
     public ApiResponse<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ApiResponse.success(users);
     }
-
+//根据状态查找用户
     @GetMapping("/status/{status}")
     public ApiResponse<List<User>> getUsersByStatus(@PathVariable Integer status) {
         List<User> users = userService.getUsersByStatus(status);
         return ApiResponse.success(users);
     }
-
+//更新，修改用户信息
     @PutMapping("/{id}")
     public ApiResponse<User> updateUser(@PathVariable Long id, @Valid @RequestBody User user) {
         user.setId(id);
         User updatedUser = userService.updateUser(user);
         return ApiResponse.success("用户信息更新成功", updatedUser);
     }
-
+//删除用户
     @DeleteMapping("/{id}")
     public ApiResponse<Void> deleteUser(@PathVariable Long id) {
         boolean result = userService.deleteUser(id);
@@ -104,19 +104,19 @@ public class UserController {
             return ApiResponse.error("用户删除失败");
         }
     }
-
+//检查用户名是否已存在
     @GetMapping("/check/username")
     public ApiResponse<Boolean> checkUsernameExists(@RequestParam String username) {
         boolean exists = userService.userExistsByUsername(username);
         return ApiResponse.success(exists);
     }
-
+//检查微信OpenId
     @GetMapping("/check/openid")
     public ApiResponse<Boolean> checkOpenIdExists(@RequestParam String openId) {
         boolean exists = userService.userExistsByOpenId(openId);
         return ApiResponse.success(exists);
     }
-
+//统计用户总数
     @GetMapping("/count")
     public ApiResponse<Integer> getUserCount() {
         int count = userService.getUserCount();

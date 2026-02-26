@@ -21,4 +21,4 @@ public interface SharedListMapper {
     int deleteByShareCode(String shareCode);
     int count();
     int countActiveByOwnerUserId(Long ownerUserId);
-}
+}//模板分享功能，暂时用不到

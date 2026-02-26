@@ -15,13 +15,13 @@ public class UserPreferenceController {
 
     @Autowired
     private UserPreferenceService userPreferenceService;
-
+//创建用户偏好
     @PostMapping
     public ApiResponse<UserPreference> createUserPreference(@Valid @RequestBody UserPreference preference) {
         UserPreference createdPreference = userPreferenceService.createUserPreference(preference);
         return ApiResponse.success("用户偏好创建成功", createdPreference);
     }
-
+//根据ID获取用户偏好
     @GetMapping("/{userId}")
     public ApiResponse<UserPreference> getUserPreference(@PathVariable Long userId) {
         UserPreference preference = userPreferenceService.getUserPreferenceByUserId(userId);
@@ -30,7 +30,7 @@ public class UserPreferenceController {
         }
         return ApiResponse.success(preference);
     }
-
+//修改更新用户偏好
     @PutMapping("/{userId}")
     public ApiResponse<UserPreference> updateUserPreference(@PathVariable Long userId, 
                                                            @Valid @RequestBody UserPreference preference) {
@@ -38,7 +38,7 @@ public class UserPreferenceController {
         UserPreference updatedPreference = userPreferenceService.updateUserPreference(preference);
         return ApiResponse.success("用户偏好更新成功", updatedPreference);
     }
-
+//删除用户偏好
     @DeleteMapping("/{userId}")
     public ApiResponse<Void> deleteUserPreference(@PathVariable Long userId) {
         boolean result = userPreferenceService.deleteUserPreference(userId);
@@ -48,7 +48,7 @@ public class UserPreferenceController {
             return ApiResponse.error("用户偏好删除失败");
         }
     }
-
+//检查用户偏好是否存在
     @GetMapping("/{userId}/exists")
     public ApiResponse<Boolean> checkUserPreferenceExists(@PathVariable Long userId) {
         boolean exists = userPreferenceService.userPreferenceExists(userId);
