@@ -14,7 +14,26 @@ import java.util.List;
 @Service
 public class TripServiceImpl implements TripService {
 
+    private final DeepSeekPackingService deepSeekPackingService;
 
+    @Override
+    @Transactional
+    public void createTrip(Trip trip, List<TripDestination> destinations) {
+        tripMapper.insert(trip);
+        for (TripDestination dest : destinations) {
+            dest.setTripId(trip.getId());
+            tripDestinationMapper.insert(dest);
+        }
+        // 异步调用 AI 生成物品
+        CompletableFuture.runAsync(() -> {
+            try {
+                deepSeekPackingService.generateItemsForTrip(trip);
+            } catch (Exception e) {
+                log.error("AI 生成物品失败", e);
+            }
+        });
+    }
+    
     @Override
     public Trip createTrip(Trip trip) {
         return null;
