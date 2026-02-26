@@ -2,6 +2,8 @@ package com.example.packupbackend.mapper;
 
 import com.example.packupbackend.entity.TripDestination;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 @Mapper

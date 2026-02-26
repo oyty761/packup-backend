@@ -3,20 +3,20 @@ package com.example.packupbackend.service.impl;
 import com.example.packupbackend.entity.WeatherForecast;
 import com.example.packupbackend.service.WeatherForecastService;
 import com.example.packupbackend.mapper.WeatherForecastMapper;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-
+@Service
+@AllArgsConstructor
 public class WeatherForecastServiceImpl implements WeatherForecastService {
+    private final WeatherForecastMapper weatherForecastMapper;
     @Override
     public WeatherForecast createForecast(WeatherForecast forecast) {
         weatherForecastMapper.insert(forecast);
         return forecast;  // insert 后 forecast 的 id 会被自动回填（如果 Mapper 配置了 useGeneratedKeys）
     }
-
     @Override
     public WeatherForecast getForecastById(Long id) {
         return weatherForecastMapper.selectById(id);

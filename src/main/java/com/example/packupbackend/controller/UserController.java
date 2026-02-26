@@ -1,8 +1,10 @@
 package com.example.packupbackend.controller;
 
 import com.example.packupbackend.common.ApiResponse;
+import com.example.packupbackend.dto.UserRegisterDTO;
 import com.example.packupbackend.entity.User;
 import com.example.packupbackend.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,23 +14,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
+    //注册
     @PostMapping("/register")
-    public ApiResponse<User> register(@Valid @RequestBody UserRegistrationRequest request) {
+    public ApiResponse<User> register(@Valid @RequestBody UserRegisterDTO request) {
         try {
             User user = userService.register(
                 request.getUsername(), 
-                request.getPassword(), 
-                request.getGender(), 
-                request.getAge()
+                request.getPassword()
             );
             return ApiResponse.success("注册成功", user);
         } catch (Exception e) {
@@ -37,7 +34,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ApiResponse<User> login(@Valid @RequestBody UserLoginRequest request) {
+    public ApiResponse<User> login(@Valid @RequestBody UserRegisterDTO request) {
         try {
             User user = userService.login(request.getUsername(), request.getPassword());
             return ApiResponse.success("登录成功", user);
@@ -45,7 +42,7 @@ public class UserController {
             return ApiResponse.error(e.getMessage());
         }
     }
-
+/*
     @PostMapping("/wechat/register")
     public ApiResponse<User> registerWithWeChat(@Valid @RequestBody WeChatRegisterRequest request) {
         try {
@@ -68,7 +65,7 @@ public class UserController {
         } catch (Exception e) {
             return ApiResponse.error(e.getMessage());
         }
-    }
+    }*/
 
     @GetMapping("/{id}")
     public ApiResponse<User> getUserById(@PathVariable Long id) {
@@ -126,54 +123,5 @@ public class UserController {
         return ApiResponse.success(count);
     }
 
-    // 请求体类
-    public static class UserRegistrationRequest {
-        private String username;
-        private String password;
-        private String gender;
-        private Integer age;
 
-        // getters and setters
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
-        public String getGender() { return gender; }
-        public void setGender(String gender) { this.gender = gender; }
-        public Integer getAge() { return age; }
-        public void setAge(Integer age) { this.age = age; }
-    }
-
-    public static class UserLoginRequest {
-        private String username;
-        private String password;
-
-        // getters and setters
-        public String getUsername() { return username; }
-        public void setUsername(String username) { this.username = username; }
-        public String getPassword() { return password; }
-        public void setPassword(String password) { this.password = password; }
-    }
-
-    public static class WeChatRegisterRequest {
-        private String openId;
-        private String nickname;
-        private String avatarUrl;
-
-        // getters and setters
-        public String getOpenId() { return openId; }
-        public void setOpenId(String openId) { this.openId = openId; }
-        public String getNickname() { return nickname; }
-        public void setNickname(String nickname) { this.nickname = nickname; }
-        public String getAvatarUrl() { return avatarUrl; }
-        public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
-    }
-
-    public static class WeChatLoginRequest {
-        private String openId;
-
-        // getters and setters
-        public String getOpenId() { return openId; }
-        public void setOpenId(String openId) { this.openId = openId; }
-    }
 }

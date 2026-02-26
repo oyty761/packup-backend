@@ -62,5 +62,6 @@
     <select id="countByTripId" parameterType="Long" resultType="int">
         SELECT COUNT(*) FROM weather_forecast WHERE trip_id = #{tripId}
     </select>
+    <select id="findByTripIdAndCityAndDate" resultType="com.example.packupbackend.entity.WeatherForecast"></select>
 
 </mapper>

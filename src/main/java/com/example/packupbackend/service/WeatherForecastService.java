@@ -14,4 +14,6 @@ public interface WeatherForecastService {
     boolean deleteForecast(Long id);
     boolean deleteForecastsByTripId(Long tripId);
     int getForecastCountByTripId(Long tripId);
+
+    WeatherForecast getForecastByTripIdCityAndDate(Long tripId, String city, LocalDate date);
 }

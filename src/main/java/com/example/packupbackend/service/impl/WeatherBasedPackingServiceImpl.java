@@ -8,6 +8,7 @@ import com.example.packupbackend.entity.WeatherForecast;
 import com.example.packupbackend.mapper.PackingItemMapper;
 import com.example.packupbackend.mapper.TripDestinationMapper;
 import com.example.packupbackend.mapper.WeatherForecastMapper;
+import com.example.packupbackend.service.WeatherBasedPackingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,7 @@ import java.util.*;
 
 @Slf4j
 @Service
-public class WeatherBasedPackingServiceImpl {
+public class WeatherBasedPackingServiceImpl implements WeatherBasedPackingService {
 
     private final WeatherApiConfig weatherApiConfig;
     private final RestTemplate restTemplate;

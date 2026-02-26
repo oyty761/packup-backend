@@ -4,7 +4,7 @@ import com.example.packupbackend.entity.User;
 import java.util.List;
 
 public interface UserService {
-    User register(String username, String password, String gender, Integer age);
+    User register(String username, String password);
     User login(String username, String password);
     User registerWithWeChat(String openId, String nickname, String avatarUrl);
     User loginWithWeChat(String openId);

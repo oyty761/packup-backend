@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User register(String username, String password, String gender, Integer age) {
+    public User register(String username, String password) {
         // 检查用户名是否已存在
         if (userMapper.existsByUsername(username) > 0) {
             throw new RuntimeException("用户名已存在");
@@ -45,8 +45,6 @@ public class UserServiceImpl implements UserService {
         // 创建默认用户偏好
         UserPreference preference = new UserPreference();
         preference.setUserId(user.getId());
-        preference.setAge(age);
-        preference.setGender(gender);
         preference.setTravelCompanions(1);
         preference.setColdSensitivity(3);
         preference.setHeatSensitivity(3);
