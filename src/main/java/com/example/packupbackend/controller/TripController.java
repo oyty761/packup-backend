@@ -123,5 +123,14 @@ public class TripController {
         weatherBasedPackingService.generateItemsFromWeather(trip);//调用天气生成相应的打包物品建议
         return ApiResponse.success(null);//成功后返回空数据的成功响应
     }
-}
 
+    @PostMapping("/{tripId}/generate-ai-items")
+    public ApiResponse<Void> generateAiItems(@PathVariable Long tripId) {
+        Trip trip = tripMapper.selectById(tripId);
+        if (trip == null) {
+            return ApiResponse.error("行程不存在");
+        }
+        deepSeekPackingService.generateItemsForTrip(trip);
+        return ApiResponse.success(null);
+    }
+}
