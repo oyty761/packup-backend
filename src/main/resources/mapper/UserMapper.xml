@@ -52,13 +52,13 @@
 
     <update id="update" parameterType="com.example.packupbackend.entity.User">
         UPDATE user
-        SET open_id = #{openId}, union_id = #{unionId}, session_key = #{sessionKey},
-            nickname = #{nickname}, avatar_url = #{avatarUrl}, phone = #{phone},
-            username = #{username}, password = #{password}, status = #{status},
-            last_login_time = #{lastLoginTime}, last_login_ip = #{lastLoginIp},
+        SET nickname = #{nickname},
+            avatar_url = #{avatarUrl},
+            phone = #{phone},
             updated_time = #{updatedTime}
         WHERE id = #{id}
     </update>
+
 
     <update id="updateLastLogin">
         UPDATE user
