@@ -28,6 +28,10 @@
         SELECT * FROM trip_destination WHERE trip_id = #{tripId} ORDER BY order_index
     </select>
 
+    <select id="findByTripId" parameterType="Long" resultMap="TripDestinationResultMap">
+        SELECT * FROM trip_destination WHERE trip_id = #{tripId} ORDER BY order_index
+    </select>
+
     <select id="selectAll" resultMap="TripDestinationResultMap">
         SELECT * FROM trip_destination
     </select>
@@ -50,6 +54,4 @@
     <select id="countByTripId" parameterType="Long" resultType="int">
         SELECT COUNT(*) FROM trip_destination WHERE trip_id = #{tripId}
     </select>
-    <select id="findByTripId" resultType="com.example.packupbackend.entity.TripDestination"></select>
-
 </mapper>

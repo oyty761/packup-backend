@@ -19,7 +19,8 @@
 
     <insert id="insert" parameterType="com.example.packupbackend.entity.PackingItem" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO packing_item (name, category, quantity, notes, is_packed, source, trip_id)
-        VALUES (#{name}, #{category}, #{quantity}, #{notes}, #{isPacked}, #{source}, #{trip.id})
+        VALUES (#{name}, #{category}, #{quantity}, #{notes}, #{isPacked}, #{source}, #{tripId})
+
     </insert>
 
     <select id="selectById" parameterType="Long" resultMap="PackingItemResultMap">

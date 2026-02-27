@@ -6,19 +6,18 @@ import com.example.packupbackend.mapper.TripMapper;
 import com.example.packupbackend.service.DeepSeekPackingService;
 import com.example.packupbackend.service.TripService;
 import com.example.packupbackend.service.WeatherBasedPackingService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.List;
+import com.example.packupbackend.dto.trip.TripCreateDTO;
 
 @RestController
 @RequestMapping("/api/trips")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class TripController {
 
     @Autowired
@@ -39,106 +38,118 @@ public class TripController {
      * @return 创建的行程对象
      */
     @PostMapping
-    public ApiResponse<Trip> createTrip(@Valid @RequestBody TripCreationRequest request) {
-        // 1. 创建一个新的 Trip 实体对象
-        Trip newTrip = new Trip();
+    public ApiResponse<Trip> createTrip(@Valid @RequestBody TripCreateDTO request) {
+        log.info("创建行程请求: userId={}, tripName={}", request.getUserId(), request.getTripName());
 
-        // 2. 从请求中获取数据并设置到新对象中
-        newTrip.setUserId(request.getUserId());
-        newTrip.setTripName(request.getTripName());
-        newTrip.setStartDate(request.getStartDate());
-        newTrip.setEndDate(request.getEndDate());
-        newTrip.setDestinations(request.getDestinations());
+        try {
+            // 创建 Trip 实体对象
+            Trip newTrip = new Trip();
+            newTrip.setUserId(request.getUserId());
+            newTrip.setTripName(request.getTripName());
+            newTrip.setStartDate(request.getStartDate());
+            newTrip.setEndDate(request.getEndDate());
+            newTrip.setDestinations(request.getDestinations());
 
-        // 3. 调用 Service 层的方法，传入构建好的 Trip 对象
-        Trip createdTrip = tripService.createTrip(newTrip);
+            // 调用服务层创建行程
+            Trip createdTrip = tripService.createTrip(newTrip);
 
-        // 4. 返回成功的响应
-        return ApiResponse.success("行程创建成功", createdTrip);
+            log.info("行程创建成功，ID: {}", createdTrip.getId());
+            return ApiResponse.success("行程创建成功", createdTrip);
+
+        } catch (Exception e) {
+            log.error("创建行程失败", e);
+            return ApiResponse.error("创建行程失败: " + e.getMessage());
+        }
     }
 
     /**
-     * 用于接收创建行程请求的数据传输对象 (DTO)
+     * 查询所有行程
      */
-    public static class TripCreationRequest {
-
-        @NotNull(message = "用户ID不能为空")
-        private Long userId;
-
-        @NotEmpty(message = "行程名称不能为空")
-        private String tripName;
-
-        @NotEmpty(message = "目的地不能为空")
-        private List<String> destinations;
-
-        @NotNull(message = "出发日期不能为空")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        private LocalDate startDate;
-
-        @NotNull(message = "返回日期不能为空")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-        private LocalDate endDate;
-
-        // --- Getters and Setters ---
-
-        public Long getUserId() {
-            return userId;
-        }
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
-
-        public String getTripName() {
-            return tripName;
-        }
-
-        public void setTripName(String tripName) {
-            this.tripName = tripName;
-        }
-
-        public List<String> getDestinations() {
-            return destinations;
-        }
-
-        public void setDestinations(List<String> destinations) {
-            this.destinations = destinations;
-        }
-
-        public LocalDate getStartDate() {
-            return startDate;
-        }
-
-        public void setStartDate(LocalDate startDate) {
-            this.startDate = startDate;
-        }
-
-        public LocalDate getEndDate() {
-            return endDate;
-        }
-
-        public void setEndDate(LocalDate endDate) {
-            this.endDate = endDate;
-        }
+    @GetMapping
+    public ApiResponse<List<Trip>> getAllTrips() {
+        List<Trip> trips = tripMapper.selectAll();
+        return ApiResponse.success("查询成功", trips);
     }
 
-    @PostMapping("/{tripId}/generate-weather-items")
-    public ApiResponse<Void> generateWeatherItems(@PathVariable Long tripId) {
-        Trip trip = tripService.getTripById(tripId);//获取行程信息
-        if (trip == null) {//行程存在性验证
+    /**
+     * 根据ID查询单个行程
+     */
+    @GetMapping("/{tripId}")
+    public ApiResponse<Trip> getTripById(@PathVariable Long tripId) {
+        Trip trip = tripMapper.selectById(tripId);
+        if (trip == null) {
             return ApiResponse.error("行程不存在");
         }
-        weatherBasedPackingService.generateItemsFromWeather(trip);//调用天气生成相应的打包物品建议
-        return ApiResponse.success(null);//成功后返回空数据的成功响应
+        return ApiResponse.success("查询成功", trip);
     }
 
+    /**
+     * 根据用户ID查询行程
+     */
+    @GetMapping("/user/{userId}")
+    public ApiResponse<List<Trip>> getTripsByUserId(@PathVariable Long userId) {
+        List<Trip> trips = tripMapper.selectByUserId(userId);
+        return ApiResponse.success("查询成功", trips);
+    }
+
+    /**
+     * 更新行程
+     */
+    @PutMapping("/{tripId}")
+    public ApiResponse<Trip> updateTrip(@PathVariable Long tripId, @Valid @RequestBody TripCreateDTO request) {
+        Trip existingTrip = tripMapper.selectById(tripId);
+        if (existingTrip == null) {
+            return ApiResponse.error("行程不存在");
+        }
+
+        existingTrip.setTripName(request.getTripName());
+        existingTrip.setStartDate(request.getStartDate());
+        existingTrip.setEndDate(request.getEndDate());
+        existingTrip.setDestinations(request.getDestinations());
+
+        Trip updatedTrip = tripService.updateTrip(existingTrip);
+        return ApiResponse.success("行程更新成功", updatedTrip);
+    }
+
+    /**
+     * 删除行程
+     */
+    @DeleteMapping("/{tripId}")
+    public ApiResponse<Void> deleteTrip(@PathVariable Long tripId) {
+        boolean result = tripService.deleteTrip(tripId);
+        if (result) {
+            return ApiResponse.success("行程删除成功");
+        } else {
+            return ApiResponse.error("行程删除失败");
+        }
+    }
+
+    /**
+     * 基于天气生成打包物品建议
+     */
+    @PostMapping("/{tripId}/generate-weather-items")
+    public ApiResponse<Void> generateWeatherItems(@PathVariable Long tripId) {
+        Trip trip = tripService.getTripById(tripId);
+        if (trip == null) {
+            return ApiResponse.error("行程不存在");
+        }
+
+        weatherBasedPackingService.generateItemsFromWeather(trip);
+        return ApiResponse.success(null);
+    }
+
+    /**
+     * 基于AI生成打包物品建议
+     */
     @PostMapping("/{tripId}/generate-ai-items")
     public ApiResponse<Void> generateAiItems(@PathVariable Long tripId) {
         Trip trip = tripMapper.selectById(tripId);
         if (trip == null) {
             return ApiResponse.error("行程不存在");
         }
+
         deepSeekPackingService.generateItemsForTrip(trip);
         return ApiResponse.success(null);
     }
 }
+

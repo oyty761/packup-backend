@@ -7,7 +7,11 @@ import com.example.packupbackend.service.PackingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.packupbackend.dto.packing.PackingItemCreateDTO;
+import com.example.packupbackend.dto.packing.PackingItemUpdateDTO;
+import com.example.packupbackend.dto.packing.PackingTemplateCreateDTO;
+import com.example.packupbackend.dto.packing.TemplateApplyDTO;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +31,20 @@ public class PackingController {
      * 为指定行程创建新的打包物品。
      */
     @PostMapping("/list")
-    public ApiResponse<PackingItem> createPackingItem(@RequestBody PackingItem packingItem) {
+    public ApiResponse<PackingItem> createPackingItem(@Valid @RequestBody PackingItemCreateDTO dto) {
+        PackingItem packingItem = new PackingItem();
+        packingItem.setTripId(dto.getTripId());
+        packingItem.setName(dto.getName());
+        packingItem.setQuantity(dto.getQuantity());
+        packingItem.setCategory(dto.getCategory());
+        packingItem.setSubCategory(dto.getSubCategory());
+        packingItem.setNotes(dto.getNotes());
+        packingItem.setSource("manual"); // 手动添加
+
         log.info("Creating packing item: {}", packingItem);
         return ApiResponse.success(packingService.createPackingItem(packingItem));
     }
+
 
     /**
      * 根据ID获取指定打包物品的详细信息。
@@ -54,9 +68,19 @@ public class PackingController {
      * 更新指定打包物品的信息。
      */
     @PutMapping("/list/{id}")
-    public ApiResponse<PackingItem> updatePackingItem(@PathVariable Long id, @RequestBody PackingItem item) {
+    public ApiResponse<PackingItem> updatePackingItem(@PathVariable Long id,
+                                                      @Valid @RequestBody PackingItemUpdateDTO dto) {
+        PackingItem item = new PackingItem();
+        item.setName(dto.getName());
+        item.setQuantity(dto.getQuantity());
+        item.setCategory(dto.getCategory());
+        item.setSubCategory(dto.getSubCategory());
+        item.setNotes(dto.getNotes());
+        item.setIsPacked(dto.getIsPacked());
+
         return ApiResponse.success(packingService.updatePackingItem(id, item));
     }
+
 
     /**
      * 删除指定的打包物品。
@@ -73,22 +97,23 @@ public class PackingController {
      * 将指定行程的打包物品保存为一个新模板。
      */
     @PostMapping("/template")
-    public ApiResponse<PackingTemplate> saveAsTemplate(@RequestBody Map<String, String> payload) {
-        String name = payload.get("name");
-        String category = payload.get("category");
-        Long tripId = Long.parseLong(payload.get("tripId"));
-        return ApiResponse.success(packingService.saveAsTemplate(name, category, tripId));
+    public ApiResponse<PackingTemplate> saveAsTemplate(@Valid @RequestBody PackingTemplateCreateDTO dto) {
+        return ApiResponse.success(packingService.saveAsTemplate(
+                dto.getTemplateName(),
+                dto.getDescription(),
+                dto.getTripId()
+        ));
     }
+
 
     /**
      * 应用一个模板来为指定行程创建打包物品。
      */
     @PostMapping("/template/apply")
-    public ApiResponse<List<PackingItem>> applyTemplate(@RequestBody Map<String, String> payload) {
-        Long templateId = Long.parseLong(payload.get("templateId"));
-        Long tripId = Long.parseLong(payload.get("tripId"));
-        return ApiResponse.success(packingService.applyTemplate(templateId, tripId));
+    public ApiResponse<List<PackingItem>> applyTemplate(@Valid @RequestBody TemplateApplyDTO dto) {
+        return ApiResponse.success(packingService.applyTemplate(dto.getTemplateId(), dto.getTripId()));
     }
+
 
     /**
      * 获取所有已保存的模板列表。

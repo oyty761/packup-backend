@@ -8,15 +8,14 @@
         <id property="id" column="id"/>
         <result property="templateName" column="template_name"/>
         <result property="description" column="description"/>
-        <result property="itemsJson" column="items_json"/>
         <association property="user" column="user_id" javaType="com.example.packupbackend.entity.User">
             <id property="id" column="user_id"/>
         </association>
     </resultMap>
 
     <insert id="insert" parameterType="com.example.packupbackend.entity.PackingTemplate" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO packing_template (template_name, description, items_json, user_id)
-        VALUES (#{templateName}, #{description}, #{itemsJson}, #{user.id})
+        INSERT INTO packing_template (template_name, description, user_id)
+        VALUES (#{templateName}, #{description}, #{user.id})
     </insert>
 
     <select id="selectById" parameterType="Long" resultMap="PackingTemplateResultMap">
@@ -64,7 +63,6 @@
         UPDATE packing_template
         SET template_name = #{templateName},
             description = #{description},
-            items_json = #{itemsJson},
             user_id = #{user.id}
         WHERE id = #{id}
     </update>
@@ -74,3 +72,4 @@
     </delete>
 
 </mapper>
+

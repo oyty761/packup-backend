@@ -6,19 +6,21 @@
 
     <resultMap id="TripResultMap" type="com.example.packupbackend.entity.Trip">
         <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
         <result property="tripName" column="trip_name"/>
         <result property="startDate" column="start_date"/>
         <result property="endDate" column="end_date"/>
         <result property="travelDays" column="travel_days"/>
         <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
         <association property="user" column="user_id" javaType="com.example.packupbackend.entity.User">
             <id property="id" column="user_id"/>
         </association>
     </resultMap>
 
     <insert id="insert" parameterType="com.example.packupbackend.entity.Trip" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO trip (trip_name, start_date, end_date, travel_days, user_id, created_time)
-        VALUES (#{tripName}, #{startDate}, #{endDate}, #{travelDays}, #{user.id}, #{createdTime})
+        INSERT INTO trip (user_id, trip_name, start_date, end_date, created_time, updated_time)
+        VALUES (#{userId}, #{tripName}, #{startDate}, #{endDate}, #{createdTime}, #{updatedTime})
     </insert>
 
     <select id="selectById" parameterType="Long" resultMap="TripResultMap">
@@ -54,14 +56,14 @@
         SET trip_name = #{tripName},
             start_date = #{startDate},
             end_date = #{endDate},
-            travel_days = #{travelDays},
-            user_id = #{user.id},
-            created_time = #{createdTime}
+            user_id = #{userId}
         WHERE id = #{id}
     </update>
+
 
     <delete id="deleteById" parameterType="Long">
         DELETE FROM trip WHERE id = #{id}
     </delete>
 
 </mapper>
+
