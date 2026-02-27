@@ -6,7 +6,7 @@ import com.example.packupbackend.service.UserPreferenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import com.example.packupbackend.dto.userpreference.UserPreferenceCreateDTO;
+
 import com.example.packupbackend.dto.userpreference.UserPreferenceUpdateDTO;
 @RestController
 @RequestMapping("/api/user-preferences")
@@ -15,7 +15,7 @@ public class UserPreferenceController {
 
     @Autowired
     private UserPreferenceService userPreferenceService;
-//创建用户偏好
+/*//创建用户偏好（因为在用户注册时会自动创建默认偏好，所以此处无需额外创建
 @PostMapping
 public ApiResponse<UserPreference> createUserPreference(@Valid @RequestBody UserPreferenceCreateDTO preferenceDTO) {
     UserPreference preference = new UserPreference();
@@ -31,6 +31,8 @@ public ApiResponse<UserPreference> createUserPreference(@Valid @RequestBody User
     UserPreference createdPreference = userPreferenceService.createUserPreference(preference);
     return ApiResponse.success("用户偏好创建成功", createdPreference);
 }
+
+ */
 //根据ID获取用户偏好
     @GetMapping("/{userId}")
     public ApiResponse<UserPreference> getUserPreference(@PathVariable Long userId) {
