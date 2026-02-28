@@ -1,0 +1,1709 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "默认模块",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "tags": [],
+  "paths": {
+    "/api/users/register": {
+      "post": {
+        "summary": "用户注册",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "username": " test1",
+                "password": "123456"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "注册成功",
+                  "data": {
+                    "id": 3,
+                    "openId": null,
+                    "unionId": null,
+                    "sessionKey": null,
+                    "nickname": null,
+                    "avatarUrl": null,
+                    "phone": null,
+                    "username": " test1",
+                    "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+                    "status": 1,
+                    "lastLoginTime": null,
+                    "lastLoginIp": null,
+                    "createdTime": "2026-02-27T09:42:17.6449381",
+                    "updatedTime": "2026-02-27T09:42:17.6449381"
+                  },
+                  "timestamp": 1772156537669
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "summary": "用户登录",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "username": "test2",
+                "password": "123456"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": false,
+                  "message": "用户不存在",
+                  "data": null,
+                  "timestamp": 1772157247369
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "获取用户列表",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 1,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": "your_username",
+                      "password": "4da3376323046a3bb6759f0a3f4ae7100a0567950c53ee42d2e19201baaa6dfc",
+                      "status": 1,
+                      "lastLoginTime": null,
+                      "lastLoginIp": null,
+                      "createdTime": "2026-02-26T21:05:21.880212",
+                      "updatedTime": "2026-02-26T21:05:21.880212"
+                    },
+                    {
+                      "id": 2,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": "test1",
+                      "password": "4da3376323046a3bb6759f0a3f4ae7100a0567950c53ee42d2e19201baaa6dfc",
+                      "status": 1,
+                      "lastLoginTime": null,
+                      "lastLoginIp": null,
+                      "createdTime": "2026-02-26T21:26:11.672902",
+                      "updatedTime": "2026-02-26T21:26:11.672902"
+                    },
+                    {
+                      "id": 3,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": " test1",
+                      "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+                      "status": 1,
+                      "lastLoginTime": "2026-02-27T10:02:02",
+                      "lastLoginIp": null,
+                      "createdTime": "2026-02-27T09:42:17.644938",
+                      "updatedTime": "2026-02-27T10:02:02.433475"
+                    }
+                  ],
+                  "timestamp": 1772158218567
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/1": {
+      "get": {
+        "summary": "根据ID获取用户信息",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": {
+                    "id": 1,
+                    "openId": null,
+                    "unionId": null,
+                    "sessionKey": null,
+                    "nickname": null,
+                    "avatarUrl": null,
+                    "phone": null,
+                    "username": "your_username",
+                    "password": "4da3376323046a3bb6759f0a3f4ae7100a0567950c53ee42d2e19201baaa6dfc",
+                    "status": 1,
+                    "lastLoginTime": null,
+                    "lastLoginIp": null,
+                    "createdTime": "2026-02-26T21:05:21.880212",
+                    "updatedTime": "2026-02-26T21:05:21.880212"
+                  },
+                  "timestamp": 1772158129518
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/status/1": {
+      "get": {
+        "summary": "根据状态查找用户",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 1,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": "your_username",
+                      "password": "4da3376323046a3bb6759f0a3f4ae7100a0567950c53ee42d2e19201baaa6dfc",
+                      "status": 1,
+                      "lastLoginTime": null,
+                      "lastLoginIp": null,
+                      "createdTime": "2026-02-26T21:05:21.880212",
+                      "updatedTime": "2026-02-26T21:05:21.880212"
+                    },
+                    {
+                      "id": 2,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": "test1",
+                      "password": "4da3376323046a3bb6759f0a3f4ae7100a0567950c53ee42d2e19201baaa6dfc",
+                      "status": 1,
+                      "lastLoginTime": null,
+                      "lastLoginIp": null,
+                      "createdTime": "2026-02-26T21:26:11.672902",
+                      "updatedTime": "2026-02-26T21:26:11.672902"
+                    },
+                    {
+                      "id": 3,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": " test1",
+                      "password": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92",
+                      "status": 1,
+                      "lastLoginTime": "2026-02-27T10:02:02",
+                      "lastLoginIp": null,
+                      "createdTime": "2026-02-27T09:42:17.644938",
+                      "updatedTime": "2026-02-27T10:02:02.433475"
+                    }
+                  ],
+                  "timestamp": 1772158305471
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/check/username": {
+      "get": {
+        "summary": "检查用户名是否存在",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "test1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": true,
+                  "timestamp": 1772159176301
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/check/openid": {
+      "get": {
+        "summary": "检查微信OpenId是否存在",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "openId",
+            "in": "query",
+            "description": "",
+            "required": false,
+            "example": "1",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": false,
+                  "timestamp": 1772159276952
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/count": {
+      "get": {
+        "summary": "统计用户总数",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": 2,
+                  "timestamp": 1772159319925
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/users/3": {
+      "put": {
+        "summary": "更新用户信息",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "nickname": "昵称test",
+                "avatarUrl": "头像URL",
+                "phone": "新手机号"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "用户信息更新成功",
+                  "data": {
+                    "id": 3,
+                    "openId": null,
+                    "unionId": null,
+                    "sessionKey": null,
+                    "nickname": "昵称test",
+                    "avatarUrl": "头像URL",
+                    "phone": "新手机号",
+                    "username": null,
+                    "password": null,
+                    "status": null,
+                    "lastLoginTime": null,
+                    "lastLoginIp": null,
+                    "createdTime": null,
+                    "updatedTime": "2026-02-27T10:19:50.9780794"
+                  },
+                  "timestamp": 1772158791030
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": "删除用户",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "用户删除成功",
+                  "data": null,
+                  "timestamp": 1772158885307
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/user-preferences/2": {
+      "get": {
+        "summary": "根据用户ID获取偏好",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": {
+                    "userId": 2,
+                    "age": null,
+                    "gender": null,
+                    "travelCompanions": 1,
+                    "coldSensitivity": 3,
+                    "heatSensitivity": 3,
+                    "healthIssues": null,
+                    "packingStyle": "comprehensive",
+                    "updatedTime": "2026-02-26T21:26:11.674901"
+                  },
+                  "timestamp": 1772162855956
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/user-preferences/1": {
+      "put": {
+        "summary": "更新用户偏好",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "age": 26,
+                "travelCompanions": 3,
+                "healthIssues": "无特殊健康问题"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "用户偏好更新成功",
+                  "data": {
+                    "userId": 1,
+                    "age": 26,
+                    "gender": null,
+                    "travelCompanions": 3,
+                    "coldSensitivity": 3,
+                    "heatSensitivity": 3,
+                    "healthIssues": "无特殊健康问题",
+                    "packingStyle": "comprehensive",
+                    "updatedTime": "2026-02-27T11:29:25.7810916"
+                  },
+                  "timestamp": 1772162965787
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": " 删除用户偏好",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "用户偏好删除成功",
+                  "data": null,
+                  "timestamp": 1772163255106
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/user-preferences": {
+      "post": {
+        "summary": "用户删除偏好后重新创建",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "userId": 1,
+                "age": 25,
+                "gender": "男",
+                "travelCompanions": 2,
+                "coldSensitivity": 3,
+                "heatSensitivity": 4,
+                "healthIssues": "无特殊疾病",
+                "packingStyle": "comprehensive"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "用户偏好创建成功",
+                  "data": {
+                    "userId": 1,
+                    "age": 25,
+                    "gender": "男",
+                    "travelCompanions": 2,
+                    "coldSensitivity": 3,
+                    "heatSensitivity": 4,
+                    "healthIssues": "无特殊疾病",
+                    "packingStyle": "comprehensive",
+                    "updatedTime": "2026-02-27T13:48:57.5762736"
+                  },
+                  "timestamp": 1772171337589
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/user-preferences/1/exists": {
+      "get": {
+        "summary": "检查用户偏好是否存在",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": true,
+                  "timestamp": 1772171543339
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/packing/list": {
+      "post": {
+        "summary": "创建打包物品",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "tripId": 1,
+                "name": "行李箱",
+                "quantity": 1,
+                "category": "行李用品",
+                "subCategory": "箱包",
+                "notes": "28寸黑色行李箱"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": {
+                    "id": 1,
+                    "tripId": 1,
+                    "name": "行李箱",
+                    "quantity": 1,
+                    "category": "行李用品",
+                    "subCategory": "箱包",
+                    "notes": "28寸黑色行李箱",
+                    "isPacked": false,
+                    "source": "manual",
+                    "trip": null,
+                    "createdTime": "2026-02-27T22:34:37.0974113",
+                    "updatedTime": "2026-02-27T22:34:37.0974113"
+                  },
+                  "timestamp": 1772202877154
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/packing/list/trip/1": {
+      "get": {
+        "summary": "获取行程所有打包物品(行程ID)",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 1,
+                      "tripId": null,
+                      "name": "行李箱",
+                      "quantity": 1,
+                      "category": "行李用品",
+                      "subCategory": null,
+                      "notes": "28寸黑色行李箱",
+                      "isPacked": false,
+                      "source": "manual",
+                      "trip": {
+                        "id": 1,
+                        "userId": null,
+                        "tripName": null,
+                        "startDate": null,
+                        "endDate": null,
+                        "travelDays": null,
+                        "user": null,
+                        "createdTime": null,
+                        "updatedTime": null,
+                        "destinations": null,
+                        "activities": null
+                      },
+                      "createdTime": null,
+                      "updatedTime": null
+                    }
+                  ],
+                  "timestamp": 1772202988487
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/packing/list/1": {
+      "get": {
+        "summary": "更新打包物品（根据打包物品ID）",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "name": "行李箱",
+                "quantity": 1,
+                "category": "行李用品",
+                "subCategory": "箱包",
+                "notes": "28寸黑色行李箱",
+                "isPacked": true
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": {
+                    "id": 1,
+                    "tripId": null,
+                    "name": "行李箱",
+                    "quantity": 1,
+                    "category": "行李用品",
+                    "subCategory": null,
+                    "notes": "28寸黑色行李箱",
+                    "isPacked": false,
+                    "source": "manual",
+                    "trip": {
+                      "id": 1,
+                      "userId": null,
+                      "tripName": null,
+                      "startDate": null,
+                      "endDate": null,
+                      "travelDays": null,
+                      "user": null,
+                      "createdTime": null,
+                      "updatedTime": null,
+                      "destinations": null,
+                      "activities": null
+                    },
+                    "createdTime": null,
+                    "updatedTime": null
+                  },
+                  "timestamp": 1772203071709
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      },
+      "delete": {
+        "summary": "删除打包物品 (打包物品ID)",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "打包物品删除成功",
+                  "data": null,
+                  "timestamp": 1772203162995
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/packing/template": {
+      "post": {
+        "summary": "将指定行程的打包物品保存为一个新模板",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "templateName": "商务出差模板",
+                "description": "适用于短期商务出行",
+                "tripId": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": {
+                    "id": 1,
+                    "templateName": "商务出差模板",
+                    "description": "适用于短期商务出行",
+                    "tags": null,
+                    "itemsJson": null,
+                    "user": {
+                      "id": 1,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": null,
+                      "password": null,
+                      "status": null,
+                      "lastLoginTime": null,
+                      "lastLoginIp": null,
+                      "createdTime": null,
+                      "updatedTime": null
+                    }
+                  },
+                  "timestamp": 1772203922816
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/packing/templates": {
+      "get": {
+        "summary": "获取所有模板",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": [
+                    {
+                      "id": 1,
+                      "templateName": "商务出差模板",
+                      "description": "适用于短期商务出行",
+                      "tags": null,
+                      "itemsJson": null,
+                      "user": {
+                        "id": 1,
+                        "openId": null,
+                        "unionId": null,
+                        "sessionKey": null,
+                        "nickname": null,
+                        "avatarUrl": null,
+                        "phone": null,
+                        "username": null,
+                        "password": null,
+                        "status": null,
+                        "lastLoginTime": null,
+                        "lastLoginIp": null,
+                        "createdTime": null,
+                        "updatedTime": null
+                      }
+                    }
+                  ],
+                  "timestamp": 1772204097802
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/packing/template/apply": {
+      "post": {
+        "summary": "应用模板",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "templateId": 1,
+                "tripId": 1
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "操作成功",
+                  "data": [],
+                  "timestamp": 1772204058970
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/trips/1/generate-weather-items": {
+      "post": {
+        "summary": "基于天气生成打包物品",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": null,
+                  "data": null,
+                  "timestamp": 1772198591008
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/trips/1/generate-ai-items": {
+      "post": {
+        "summary": "基于AI生成打包物品接口",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": null,
+                  "data": null,
+                  "timestamp": 1772198765104
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/trips": {
+      "post": {
+        "summary": "创建行程",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "userId": 1,
+                "tripName": "北京之旅",
+                "startDate": "2026-03-01",
+                "endDate": "2026-03-05",
+                "destinations": [
+                  {
+                    "cityName": "北京市",
+                    "country": "中国",
+                    "poiName": "天安门广场",
+                    "arrivalDate": "2026-03-01",
+                    "departureDate": "2026-03-05",
+                    "orderIndex": 0
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "行程创建成功",
+                  "data": {
+                    "id": 5,
+                    "userId": 1,
+                    "tripName": "北京之旅",
+                    "startDate": "2026-03-01",
+                    "endDate": "2026-03-05",
+                    "travelDays": null,
+                    "user": null,
+                    "createdTime": "2026-02-27T22:25:52.2113573",
+                    "updatedTime": "2026-02-27T22:25:52.2113573",
+                    "destinations": [
+                      {
+                        "id": null,
+                        "tripId": null,
+                        "cityName": "北京市",
+                        "country": "中国",
+                        "poiName": "天安门广场",
+                        "arrivalDate": "2026-03-01",
+                        "departureDate": "2026-03-05",
+                        "orderIndex": 0
+                      }
+                    ],
+                    "activities": null
+                  },
+                  "timestamp": 1772202352216
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      },
+      "get": {
+        "summary": "查询所有行程",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "查询成功",
+                  "data": [
+                    {
+                      "id": 1,
+                      "userId": 1,
+                      "tripName": "测试行程-1772197954483",
+                      "destinations": null,
+                      "startDate": "2026-02-27",
+                      "endDate": "2026-03-02",
+                      "travelDays": 4,
+                      "activities": null,
+                      "user": {
+                        "id": 1,
+                        "openId": null,
+                        "unionId": null,
+                        "sessionKey": null,
+                        "nickname": null,
+                        "avatarUrl": null,
+                        "phone": null,
+                        "username": null,
+                        "password": null,
+                        "status": null,
+                        "lastLoginTime": null,
+                        "lastLoginIp": null,
+                        "createdTime": null,
+                        "updatedTime": null
+                      },
+                      "createdTime": "2026-02-27T21:12:34.493737",
+                      "updatedTime": "2026-02-27T21:12:34.493737"
+                    },
+                    {
+                      "id": 2,
+                      "userId": 1,
+                      "tripName": "北京三日游",
+                      "destinations": null,
+                      "startDate": "2024-03-15",
+                      "endDate": "2024-03-17",
+                      "travelDays": 3,
+                      "activities": null,
+                      "user": {
+                        "id": 1,
+                        "openId": null,
+                        "unionId": null,
+                        "sessionKey": null,
+                        "nickname": null,
+                        "avatarUrl": null,
+                        "phone": null,
+                        "username": null,
+                        "password": null,
+                        "status": null,
+                        "lastLoginTime": null,
+                        "lastLoginIp": null,
+                        "createdTime": null,
+                        "updatedTime": null
+                      },
+                      "createdTime": "2026-02-27T21:13:29.876406",
+                      "updatedTime": "2026-02-27T21:13:29.876406"
+                    },
+                    {
+                      "id": 3,
+                      "userId": 1,
+                      "tripName": "北京三日游",
+                      "destinations": null,
+                      "startDate": "2024-03-15",
+                      "endDate": "2024-03-17",
+                      "travelDays": 3,
+                      "activities": null,
+                      "user": {
+                        "id": 1,
+                        "openId": null,
+                        "unionId": null,
+                        "sessionKey": null,
+                        "nickname": null,
+                        "avatarUrl": null,
+                        "phone": null,
+                        "username": null,
+                        "password": null,
+                        "status": null,
+                        "lastLoginTime": null,
+                        "lastLoginIp": null,
+                        "createdTime": null,
+                        "updatedTime": null
+                      },
+                      "createdTime": "2026-02-27T21:18:09.673192",
+                      "updatedTime": "2026-02-27T21:18:09.673192"
+                    }
+                  ],
+                  "timestamp": 1772199174370
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/trips/1": {
+      "get": {
+        "summary": "根据trip ID查询行程",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "查询成功",
+                  "data": {
+                    "id": 3,
+                    "userId": 1,
+                    "tripName": "北京三日游",
+                    "destinations": null,
+                    "startDate": "2024-03-15",
+                    "endDate": "2024-03-17",
+                    "travelDays": 3,
+                    "activities": null,
+                    "user": {
+                      "id": 1,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": null,
+                      "password": null,
+                      "status": null,
+                      "lastLoginTime": null,
+                      "lastLoginIp": null,
+                      "createdTime": null,
+                      "updatedTime": null
+                    },
+                    "createdTime": "2026-02-27T21:18:09.673192",
+                    "updatedTime": "2026-02-27T21:18:09.673192"
+                  },
+                  "timestamp": 1772199246771
+                }
+              }
+            },
+            "headers": {}
+          }
+        },
+        "security": []
+      },
+      "put": {
+        "summary": "更新行程(根据trip id)",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "",
+            "required": false,
+            "example": " application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {}
+              },
+              "example": {
+                "userId": 1,
+                "tripName": "修改后的旅行名称",
+                "startDate": "2024-03-01",
+                "endDate": "2024-03-05",
+                "destinations": [
+                  {
+                    "cityName": "北京",
+                    "country": "中国",
+                    "arrivalDate": "2024-03-01",
+                    "departureDate": "2024-03-05",
+                    "orderIndex": 1
+                  }
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "行程更新成功",
+                  "data": {
+                    "id": 1,
+                    "userId": 1,
+                    "tripName": "修改后的旅行名称",
+                    "startDate": "2024-03-01",
+                    "endDate": "2024-03-05",
+                    "travelDays": 4,
+                    "user": {
+                      "id": 1,
+                      "openId": null,
+                      "unionId": null,
+                      "sessionKey": null,
+                      "nickname": null,
+                      "avatarUrl": null,
+                      "phone": null,
+                      "username": null,
+                      "password": null,
+                      "status": null,
+                      "lastLoginTime": null,
+                      "lastLoginIp": null,
+                      "createdTime": null,
+                      "updatedTime": null
+                    },
+                    "createdTime": "2026-02-27T21:12:34.493737",
+                    "updatedTime": "2026-02-27T22:05:39.2036221",
+                    "destinations": [
+                      {
+                        "id": null,
+                        "tripId": null,
+                        "cityName": "北京",
+                        "country": "中国",
+                        "poiName": null,
+                        "arrivalDate": "2024-03-01",
+                        "departureDate": "2024-03-05",
+                        "orderIndex": 1
+                      }
+                    ],
+                    "activities": null
+                  },
+                  "timestamp": 1772201139214
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/trips/user/2": {
+      "get": {
+        "summary": "根据用户ID查询行程",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "查询成功",
+                  "data": [],
+                  "timestamp": 1772199309536
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/trips/3": {
+      "delete": {
+        "summary": "删除行程",
+        "deprecated": false,
+        "description": "",
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                },
+                "example": {
+                  "success": true,
+                  "message": "行程删除成功",
+                  "data": null,
+                  "timestamp": 1772201371124
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "responses": {},
+    "securitySchemes": {}
+  },
+  "servers": [],
+  "security": []
+}
