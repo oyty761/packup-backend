@@ -51,10 +51,10 @@ public class TripController {
             newTrip.setDestinations(request.getDestinations());
 
             // 调用服务层创建行程
-            Trip createdTrip = tripService.createTrip(newTrip);
+            tripService.createTrip(newTrip, request.getDestinations());
 
-            log.info("行程创建成功，ID: {}", createdTrip.getId());
-            return ApiResponse.success("行程创建成功", createdTrip);
+            log.info("行程创建成功，ID: {}", newTrip.getId());
+            return ApiResponse.success("行程创建成功", newTrip);
 
         } catch (Exception e) {
             log.error("创建行程失败", e);
@@ -88,7 +88,7 @@ public class TripController {
      */
     @GetMapping("/user/{userId}")
     public ApiResponse<List<Trip>> getTripsByUserId(@PathVariable Long userId) {
-        List<Trip> trips = tripMapper.selectByUserId(userId);
+        List<Trip> trips = tripService.getTripsByUserId(userId);
         return ApiResponse.success("查询成功", trips);
     }
 

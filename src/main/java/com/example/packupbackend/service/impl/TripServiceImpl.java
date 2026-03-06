@@ -23,19 +23,28 @@ public class TripServiceImpl implements TripService {
     private final TripDestinationMapper tripDestinationMapper;
     private final DeepSeekPackingService deepSeekPackingService;
 
+    /**
+     * 创建行程
+     */
     @Override
     @Transactional
     public void createTrip(Trip trip, List<TripDestination> destinations) {
-        // 设置创建时间和更新时间
+
         trip.setCreatedTime(LocalDateTime.now());
         trip.setUpdatedTime(LocalDateTime.now());
 
+        // 插入 trip
         tripMapper.insert(trip);
-        for (TripDestination dest : destinations) {
-            dest.setTripId(trip.getId());
-            tripDestinationMapper.insert(dest);
+
+        // 插入 destinations
+        if (destinations != null) {
+            for (TripDestination dest : destinations) {
+                dest.setTripId(trip.getId());
+                tripDestinationMapper.insert(dest);
+            }
         }
-        // 异步调用 AI 生成物品
+
+        // 异步 AI 生成物品
         CompletableFuture.runAsync(() -> {
             try {
                 deepSeekPackingService.generateItemsForTrip(trip);
@@ -45,30 +54,61 @@ public class TripServiceImpl implements TripService {
         });
     }
 
+    /**
+     * 创建行程（简化版本）
+     */
     @Override
     public Trip createTrip(Trip trip) {
-        // 设置创建时间和更新时间
+
         trip.setCreatedTime(LocalDateTime.now());
         trip.setUpdatedTime(LocalDateTime.now());
 
-        // 插入行程
         tripMapper.insert(trip);
 
         log.info("创建行程成功，ID: {}", trip.getId());
+
         return trip;
     }
 
+    /**
+     * 根据ID获取行程
+     */
     @Override
     public Trip getTripById(Long id) {
+
         if (id == null) {
             return null;
         }
-        return tripMapper.selectById(id);
+
+        Trip trip = tripMapper.selectById(id);
+
+        if (trip != null) {
+            List<TripDestination> destinations =
+                    tripDestinationMapper.selectByTripId(id);
+
+            trip.setDestinations(destinations);
+        }
+
+        return trip;
     }
 
+    /**
+     * 根据用户ID获取行程
+     */
     @Override
     public List<Trip> getTripsByUserId(Long userId) {
-        return List.of();
+
+        List<Trip> trips = tripMapper.selectByUserId(userId);
+
+        for (Trip trip : trips) {
+
+            List<TripDestination> destinations =
+                    tripDestinationMapper.selectByTripId(trip.getId());
+
+            trip.setDestinations(destinations);
+        }
+
+        return trips;
     }
 
     @Override
@@ -78,45 +118,73 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<Trip> getAllTrips() {
-        return List.of();
+        return tripMapper.selectAll();
     }
 
+    /**
+     * 更新行程（重点修改）
+     */
     @Override
     @Transactional
     public Trip updateTrip(Trip trip) {
+
         try {
+
             log.debug("开始更新行程，ID: {}, 名称: {}", trip.getId(), trip.getTripName());
 
-            // 设置更新时间
             trip.setUpdatedTime(LocalDateTime.now());
-            log.debug("设置更新时间为: {}", trip.getUpdatedTime());
 
-            // 调用Mapper更新数据库
-            log.debug("准备执行SQL更新");
+            // 1 更新 trip 表
             int result = tripMapper.update(trip);
-            log.debug("SQL执行结果，影响行数: {}", result);
 
-            if (result > 0) {
-                log.info("行程更新成功，ID: {}", trip.getId());
-                return trip;
-            } else {
+            if (result <= 0) {
                 log.warn("行程更新失败，ID: {}", trip.getId());
                 return null;
             }
+
+            Long tripId = trip.getId();
+
+            // 2 删除旧的目的地
+            tripDestinationMapper.deleteByTripId(tripId);
+
+            // 3 插入新的目的地
+            if (trip.getDestinations() != null) {
+
+                for (TripDestination dest : trip.getDestinations()) {
+
+                    dest.setTripId(tripId);
+
+                    tripDestinationMapper.insert(dest);
+                }
+            }
+
+            log.info("行程更新成功，ID: {}", tripId);
+
+            return trip;
+
         } catch (Exception e) {
-            log.error("更新行程时发生异常，ID: {}", trip.getId(), e);
+
+            log.error("更新行程失败，ID: {}", trip.getId(), e);
+
             throw new RuntimeException("更新行程失败: " + e.getMessage(), e);
         }
     }
 
-
+    /**
+     * 删除行程
+     */
     @Override
     @Transactional
     public boolean deleteTrip(Long id) {
+
         if (id == null) {
             return false;
         }
 
+        // 先删除目的地
+        tripDestinationMapper.deleteByTripId(id);
+
+        // 再删除 trip
         int result = tripMapper.deleteById(id);
 
         if (result > 0) {
@@ -133,5 +201,3 @@ public class TripServiceImpl implements TripService {
         return 0;
     }
 }
-
-
