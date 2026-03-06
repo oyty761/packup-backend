@@ -6,12 +6,16 @@
 
     <resultMap id="PackingItemResultMap" type="com.example.packupbackend.entity.PackingItem">
         <id property="id" column="id"/>
+        <result property="tripId" column="trip_id"/>
         <result property="name" column="name"/>
-        <result property="category" column="category"/>
         <result property="quantity" column="quantity"/>
+        <result property="category" column="category"/>
+        <result property="subCategory" column="sub_category"/>
         <result property="notes" column="notes"/>
         <result property="isPacked" column="is_packed"/>
         <result property="source" column="source"/>
+        <result property="createdTime" column="created_time"/>
+        <result property="updatedTime" column="updated_time"/>
         <association property="trip" column="trip_id" javaType="com.example.packupbackend.entity.Trip">
             <id property="id" column="trip_id"/>
         </association>
@@ -24,28 +28,36 @@
     </insert>
 
     <select id="selectById" parameterType="Long" resultMap="PackingItemResultMap">
-        SELECT pi.*, t.id as trip_id
+        SELECT pi.id, pi.trip_id, pi.name, pi.quantity, pi.category, pi.sub_category, 
+               pi.notes, pi.is_packed, pi.source, pi.created_time, pi.updated_time,
+               t.id as trip_id
         FROM packing_item pi
                  LEFT JOIN trip t ON pi.trip_id = t.id
         WHERE pi.id = #{id}
     </select>
 
     <select id="selectByTripId" parameterType="Long" resultMap="PackingItemResultMap">
-        SELECT pi.*, t.id as trip_id
+        SELECT pi.id, pi.trip_id, pi.name, pi.quantity, pi.category, pi.sub_category, 
+               pi.notes, pi.is_packed, pi.source, pi.created_time, pi.updated_time,
+               t.id as trip_id
         FROM packing_item pi
                  LEFT JOIN trip t ON pi.trip_id = t.id
         WHERE pi.trip_id = #{tripId}
     </select>
 
     <select id="selectByTripIdAndIsPacked" resultMap="PackingItemResultMap">
-        SELECT pi.*, t.id as trip_id
+        SELECT pi.id, pi.trip_id, pi.name, pi.quantity, pi.category, pi.sub_category, 
+               pi.notes, pi.is_packed, pi.source, pi.created_time, pi.updated_time,
+               t.id as trip_id
         FROM packing_item pi
                  LEFT JOIN trip t ON pi.trip_id = t.id
         WHERE pi.trip_id = #{tripId} AND pi.is_packed = #{isPacked}
     </select>
 
     <select id="selectByTripIdAndCategory" resultMap="PackingItemResultMap">
-        SELECT pi.*, t.id as trip_id
+        SELECT pi.id, pi.trip_id, pi.name, pi.quantity, pi.category, pi.sub_category, 
+               pi.notes, pi.is_packed, pi.source, pi.created_time, pi.updated_time,
+               t.id as trip_id
         FROM packing_item pi
                  LEFT JOIN trip t ON pi.trip_id = t.id
         WHERE pi.trip_id = #{tripId} AND pi.category = #{category}
@@ -58,7 +70,9 @@
     </select>
 
     <select id="selectAll" resultMap="PackingItemResultMap">
-        SELECT pi.*, t.id as trip_id
+        SELECT pi.id, pi.trip_id, pi.name, pi.quantity, pi.category, pi.sub_category, 
+               pi.notes, pi.is_packed, pi.source, pi.created_time, pi.updated_time,
+               t.id as trip_id
         FROM packing_item pi
                  LEFT JOIN trip t ON pi.trip_id = t.id
     </select>
@@ -85,7 +99,9 @@
 
     <!-- 根据行程 ID、物品名称和来源查询打包物品 -->
     <select id="findByTripIdAndNameAndSource" resultMap="PackingItemResultMap">
-        SELECT pi.*, t.id as trip_id
+        SELECT pi.id, pi.trip_id, pi.name, pi.quantity, pi.category, pi.sub_category, 
+               pi.notes, pi.is_packed, pi.source, pi.created_time, pi.updated_time,
+               t.id as trip_id
         FROM packing_item pi
                  LEFT JOIN trip t ON pi.trip_id = t.id
         WHERE pi.trip_id = #{tripId} 

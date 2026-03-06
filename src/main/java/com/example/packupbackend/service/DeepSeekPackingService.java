@@ -40,14 +40,17 @@ public class DeepSeekPackingService {
 
     /**
      * 根据行程生成智能行李物品（调用 DeepSeek）
+     * @return 生成的物品列表
      */
     @Transactional
-    public void generateItemsForTrip(Trip trip) {
+    public List<PackingItem> generateItemsForTrip(Trip trip) {
+        List<PackingItem> createdItems = new ArrayList<>();
+        
         // 1. 获取行程相关数据
         List<TripDestination> destinations = tripDestinationMapper.findByTripId(trip.getId());
         if (destinations.isEmpty()) {
             log.warn("行程 {} 没有目的地，无法生成 AI 物品", trip.getId());
-            return;
+            return createdItems;
         }
 
         // 2. 获取每个目的地的天气（已有接口）
@@ -65,14 +68,14 @@ public class DeepSeekPackingService {
         String aiResponse = callDeepSeek(prompt);
         if (aiResponse == null) {
             log.error("DeepSeek API 调用失败，行程 {}", trip.getId());
-            return;
+            return createdItems;
         }
 
         // 5. 解析响应为物品列表
         List<Map<String, Object>> itemMaps = parseResponse(aiResponse);
         if (itemMaps == null || itemMaps.isEmpty()) {
             log.warn("DeepSeek 未返回有效物品，行程 {}", trip.getId());
-            return;
+            return createdItems;
         }
 
         // 6. 转换为 PackingItem 并保存（避免重复）
@@ -117,11 +120,12 @@ public class DeepSeekPackingService {
                     item.setNotes(notes != null ? notes.trim() : "AI 智能推荐");
                     item.setSource("ai");
                     item.setIsPacked(false);
-                    item.setTripId(trip.getId()); // 修复：直接设置 tripId，而不是 trip 对象
+                    item.setTripId(trip.getId());
                     
                     log.debug("准备插入物品：name={}, category={}, quantity={}, notes={}, tripId={}", 
                              item.getName(), item.getCategory(), item.getQuantity(), item.getNotes(), item.getTripId());
                     packingItemMapper.insert(item);
+                    createdItems.add(item);
                     log.info("成功插入 AI 物品：{} (tripId={})", name, trip.getId());
                 } else {
                     log.debug("物品 {} 已存在，跳过", name);
@@ -131,6 +135,8 @@ public class DeepSeekPackingService {
                          itemMap, e.getClass().getSimpleName(), e.getMessage(), e);
             }
         }
+        
+        return createdItems;
     }
 
     /**
@@ -211,7 +217,7 @@ public class DeepSeekPackingService {
             // 尝试直接解析为 List<Map>
             return objectMapper.readValue(content, new TypeReference<List<Map<String, Object>>>() {});
         } catch (Exception e) {
-            log.error("解析 DeepSeek 响应失败，内容: {}", content, e);
+            log.error("解析 DeepSeek 响应失败，内容：{}", content, e);
             return null;
         }
     }

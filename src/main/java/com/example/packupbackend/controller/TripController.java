@@ -1,6 +1,8 @@
 package com.example.packupbackend.controller;
 
 import com.example.packupbackend.common.ApiResponse;
+import com.example.packupbackend.dto.trip.TripCreateDTO;
+import com.example.packupbackend.entity.PackingItem;
 import com.example.packupbackend.entity.Trip;
 import com.example.packupbackend.mapper.TripMapper;
 import com.example.packupbackend.service.DeepSeekPackingService;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import com.example.packupbackend.dto.trip.TripCreateDTO;
+import com.example.packupbackend.entity.PackingItem;
 
 @RestController
 @RequestMapping("/api/trips")
@@ -139,17 +141,17 @@ public class TripController {
     }
 
     /**
-     * 基于AI生成打包物品建议
+     * 基于 AI 生成打包物品建议
      */
     @PostMapping("/{tripId}/generate-ai-items")
-    public ApiResponse<Void> generateAiItems(@PathVariable Long tripId) {
+    public ApiResponse<List<PackingItem>> generateAiItems(@PathVariable Long tripId) {
         Trip trip = tripMapper.selectById(tripId);
         if (trip == null) {
             return ApiResponse.error("行程不存在");
         }
 
-        deepSeekPackingService.generateItemsForTrip(trip);
-        return ApiResponse.success(null);
+        List<PackingItem> items = deepSeekPackingService.generateItemsForTrip(trip);
+        return ApiResponse.success("AI 物品生成成功", items);
     }
 }
 
