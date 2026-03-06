@@ -83,4 +83,14 @@
         DELETE FROM packing_item WHERE trip_id = #{tripId}
     </delete>
 
+    <!-- 根据行程 ID、物品名称和来源查询打包物品 -->
+    <select id="findByTripIdAndNameAndSource" resultMap="PackingItemResultMap">
+        SELECT pi.*, t.id as trip_id
+        FROM packing_item pi
+                 LEFT JOIN trip t ON pi.trip_id = t.id
+        WHERE pi.trip_id = #{tripId} 
+          AND pi.name = #{name} 
+          AND pi.source = #{source}
+    </select>
+
 </mapper>

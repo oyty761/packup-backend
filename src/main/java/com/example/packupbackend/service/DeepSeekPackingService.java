@@ -80,26 +80,55 @@ public class DeepSeekPackingService {
             try {
                 String name = (String) itemMap.get("name");
                 String category = (String) itemMap.get("category");
-                Integer quantity = itemMap.get("quantity") instanceof Number ? ((Number) itemMap.get("quantity")).intValue() : 1;
+                Object quantityObj = itemMap.get("quantity");
                 String notes = (String) itemMap.get("notes");
-
+                        
+                // 详细日志，便于调试
+                log.debug("准备解析物品：name={}, category={}, quantity={}, notes={}", 
+                         name, category, quantityObj, notes);
+        
+                // 检查必要字段
+                if (name == null || name.trim().isEmpty()) {
+                    log.error("物品名称为空，跳过此物品：{}", itemMap);
+                    continue;
+                }
+        
+                // 安全转换 quantity
+                Integer quantity = 1;
+                if (quantityObj != null) {
+                    if (quantityObj instanceof Number) {
+                        quantity = ((Number) quantityObj).intValue();
+                    } else if (quantityObj instanceof String) {
+                        try {
+                            quantity = Integer.parseInt((String) quantityObj);
+                        } catch (NumberFormatException e) {
+                            log.warn("数量格式错误，使用默认值 1: {}", quantityObj);
+                        }
+                    }
+                }
+        
                 // 检查是否已存在相同名称且来源为 "ai" 的物品
                 PackingItem existing = packingItemMapper.findByTripIdAndNameAndSource(trip.getId(), name, "ai");
                 if (existing == null) {
                     PackingItem item = new PackingItem();
-                    item.setName(name);
-                    item.setCategory(category != null ? category : "其他物品");
+                    item.setName(name.trim());
+                    item.setCategory(category != null ? category.trim() : "其他物品");
                     item.setQuantity(quantity);
-                    item.setNotes(notes != null ? notes : "AI 智能推荐");
+                    item.setNotes(notes != null ? notes.trim() : "AI 智能推荐");
                     item.setSource("ai");
                     item.setIsPacked(false);
-                    item.setTrip(trip); // 注意：如果实体中是 Trip 对象，则这样设置
+                    item.setTripId(trip.getId()); // 修复：直接设置 tripId，而不是 trip 对象
+                    
+                    log.debug("准备插入物品：name={}, category={}, quantity={}, notes={}, tripId={}", 
+                             item.getName(), item.getCategory(), item.getQuantity(), item.getNotes(), item.getTripId());
                     packingItemMapper.insert(item);
+                    log.info("成功插入 AI 物品：{} (tripId={})", name, trip.getId());
                 } else {
                     log.debug("物品 {} 已存在，跳过", name);
                 }
             } catch (Exception e) {
-                log.error("解析物品失败: {}", itemMap, e);
+                log.error("解析物品失败：itemMap={}, 错误类型：{}, 错误消息：{}", 
+                         itemMap, e.getClass().getSimpleName(), e.getMessage(), e);
             }
         }
     }
